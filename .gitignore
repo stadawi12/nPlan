@@ -1,3 +1,7 @@
+# do not track the python environment directory
 .venv
+
+# Do not track the data files as they are large
 data/*
+# But do track the data directory itself, only not its contents
 !data/.gitkeep
