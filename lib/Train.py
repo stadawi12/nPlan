@@ -1,8 +1,8 @@
-import os
-import torch
-import torch.nn.functional as F
-import torch.optim as optim
 from loader import dataset
+from torch.utils.data import DataLoader
+from models import linear
+import torch.optim as optim
+import torch.nn as nn
 
 def Train(path_data):
     """This function takes care of training a model
@@ -14,13 +14,44 @@ def Train(path_data):
 
     """
     
-    # filenames of train features and labels data
-    FILENAME_TRAIN_FEATS  = 'train_feats.npy'
-    FILENAME_TRAIN_LABELS = 'train_labels.npy'
+    # Instantiate object of dataset class
+    data_train= dataset(path_data, 'train')
 
-    # construct path to training data
-    path_train_feats  = os.path.join(path_data, FILENAME_TRAIN_FEATS)
-    path_train_labels = os.path.join(path_data, FILENAME_TRAIN_LABELS)
+    # Initialise data loader with custom batch size and shuffle bool
+    loader_train = DataLoader(data_train, batch_size = 1000, shuffle=False)
 
-    data_train_feats  = dataset(path_train_feats)
-    data_train_labels = dataset(path_train_labels)
+    # Initialise model
+    # TODO allow for option to choose device: 'cpu', 'cuda:0'
+    model = linear.Linear()
+
+    # Specify optimiser
+    optimiser = optim.Adam(model.parameters(), lr=0.001)
+
+    # bin for storing training losses
+    training_losses = []
+
+    # Loss function
+    lf = nn.BCELoss()
+
+    for e in range(50):
+
+        training_loss = []
+
+        for feats, labels in loader_train:
+
+            model.zero_grad()
+            out = model(feats.float())
+            loss = lf(out.float(), labels.float())
+            training_loss.append(loss)
+            loss.backward()
+            optimiser.step()
+        print(f"E: {e}, loss: {sum(training_loss)/len(training_loss)}")
+
+
+if __name__ == '__main__':
+    import torch
+    torch.manual_seed(0)
+
+    path_data = '../data'
+
+    Train(path_data)

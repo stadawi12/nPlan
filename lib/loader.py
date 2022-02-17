@@ -62,7 +62,7 @@ if __name__ == '__main__':
     tf = dataset(path, 'train')
 
     # Initialise data loader with custom batch size and shuffle bool
-    data_loader = DataLoader(tf, batch_size = 21, shuffle=False)
+    data_loader = DataLoader(tf, batch_size = 1, shuffle=False)
 
     # iterate over batches of data and check if shape of data agrees for
     # the first 10 batches
@@ -71,9 +71,13 @@ if __name__ == '__main__':
         # Ensure shape is correct
         print(feats.shape)
         print(labels.shape)
+        print(feats.dtype)
+        print(labels.dtype)
+        print(feats)
+        print(labels)
         # Ensure the data type is a Tensor
         print(type(feats))
         print(type(labels))
         # After 10th batch, break
-        if i == 10:
+        if i == 0:
             break
