@@ -1,0 +1,5 @@
+# Training inputs
+epochs : 1
+batch_size : 256
+lr : 0.001
+device: 'cpu'
