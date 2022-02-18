@@ -5,6 +5,7 @@ import unittest
 from loader import dataset
 from torch.utils.data import DataLoader
 import numpy as np
+import torch
 
 class TestLoader(unittest.TestCase):
 
@@ -54,9 +55,30 @@ class TestLoader(unittest.TestCase):
         numpy_feats = np.load('../data/train_feats.npy')
         numpy_labels = np.load('../data/train_labels.npy')
 
+        tensor_feats  = torch.from_numpy(numpy_feats[0:10]).float()
+        tensor_labels = torch.from_numpy(numpy_labels[0:10]).float()
+
         # check to see if the first 10 rows agree in values
-        self.assertTrue(np.array_equal(loader_feats, numpy_feats[0:10]))
-        self.assertTrue(np.array_equal(loader_labels, numpy_labels[0:10]))
+        self.assertTrue(torch.equal(loader_feats, tensor_feats))
+        self.assertTrue(torch.equal(loader_labels, tensor_labels))
+
+    def test_dataloader_type(self):
+        # test to make sure that the data type of our data point are
+        # floats 
+
+        # First, load data using my loader module
+        data_train = dataset(self.PATH_DATA, 'train')
+        # use DataLoader to manage loading training data
+        loader_train = DataLoader(data_train, shuffle=False,
+                batch_size=1)
+        train_f, train_l = next(iter(loader_train))
+
+        print(train_f.float().dtype)
+        print(train_l.float().dtype)
+
+        self.assertTrue(train_f.dtype == torch.Tensor(1).dtype)
+        self.assertTrue(train_l.dtype == torch.Tensor(1).dtype)
+
 
 
 if __name__ == "__main__":

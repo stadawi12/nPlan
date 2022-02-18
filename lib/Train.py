@@ -46,7 +46,8 @@ def Train(path_data):
     scheduler = ReduceLROnPlateau(optimiser, factor=0.5, patience=4,
             threshold=0.001)
     # Loss function
-    lf = nn.BCELoss()
+    # lf = nn.BCELoss()
+    lf = nn.CrossEntropyLoss()
     # write model to tensorboard
     writer.add_graph(model, torch.randn(1,50))
 

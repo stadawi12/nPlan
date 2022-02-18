@@ -1,6 +1,7 @@
 import os
 from torch.utils.data import Dataset
 import numpy as np
+import torch
 
 # TODO need to write tests for this module and find out if loading the
 # entire dataset when instantiating a dataset object leads to memory
@@ -43,6 +44,8 @@ class dataset(Dataset):
         assert self.data_feats.shape[0] == self.data_labels.shape[0], \
                 "Length of data is not equal size"
 
+        # convert data to torch tensor
+
 
     # controls the behaviour of the len() method
     def __len__(self):
@@ -50,7 +53,9 @@ class dataset(Dataset):
 
     # controls the behaviour of indexing dataset(..)[i]
     def __getitem__(self, i):
-        return self.data_feats[i], self.data_labels[i]
+        tensor_feature = torch.from_numpy(self.data_feats[i]).float()
+        tensor_label = torch.from_numpy(self.data_labels[i]).float()
+        return tensor_feature, tensor_label
 
 
 if __name__ == '__main__':
