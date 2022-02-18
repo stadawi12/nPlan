@@ -8,9 +8,6 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 
 # TODO need to write some tests for the Train function
 
-# TODO be able to control learning rate and other hyperparameters
-# from an input file.
-
 # TODO allow for different models to be used during training, different
 # loss functions 
 
