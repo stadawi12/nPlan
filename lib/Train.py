@@ -5,9 +5,6 @@ import torch.optim as optim
 import torch.nn as nn
 from torch.utils.tensorboard import SummaryWriter
 
-def loadData(path_data):
-    pass
-
 def Train(path_data):
     """This function takes care of training a model
 
@@ -40,7 +37,7 @@ def Train(path_data):
     # TODO allow for option to choose device: 'cpu', 'cuda:0'
     model = linear.Linear()
     # Specify optimiser
-    optimiser = optim.Adam(model.parameters(), lr=0.001)
+    optimiser = optim.Adam(model.parameters(), lr=0.01)
     # Loss function
     lf = nn.BCELoss()
     # write model to tensorboard
@@ -139,7 +136,7 @@ def Train(path_data):
 
         # END OF EPOCH -------------------------------------------------
 
-        # At the end of each epoch print a statement
+        # At the end of each epoch print a statement to the console
         print(f"E: {e}, loss: {loss_training_avg}, Accuracy: "
                 + f"{counter_correct}/{len(data_test)}")
 
