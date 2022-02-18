@@ -39,15 +39,16 @@ class dataset(Dataset):
         self.data_feats = np.load(path_feats)
         self.data_labels = np.load(path_labels)
 
-        # TODO assert that length of data_feats is same as length
-        # data_labels
+        # Assert that length of features and labels has to be the same
+        assert self.data_feats.shape[0] == self.data_labels.shape[0], \
+                "Length of data is not equal size"
 
 
     # controls the behaviour of the len() method
     def __len__(self):
         return len(self.data_feats)
 
-    # controls the behaviour of indexing dataset()[i]
+    # controls the behaviour of indexing dataset(..)[i]
     def __getitem__(self, i):
         return self.data_feats[i], self.data_labels[i]
 
@@ -60,6 +61,7 @@ if __name__ == '__main__':
     path = '../data'
     # Instantiate object of dataset class
     tf = dataset(path, 'train')
+    print(len(tf))
 
     # Initialise data loader with custom batch size and shuffle bool
     data_loader = DataLoader(tf, batch_size = 1, shuffle=False)
