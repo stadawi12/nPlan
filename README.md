@@ -4,11 +4,12 @@ labels.
 
 The data consists of roughly 45,000 training examples, each example 
 consists of 50 features of data type float. I am also given 45,000 
-labels are multi-hot vectors of size 121, that is each label is a vector
+labels which are k-hot vectors of size 121, that is each label is a vector
 of 1's and 0's, of size 121. I am also given a validation dataset and a
 testing dataset for testing the accuracy of the neural network during
 training and after, and also for validating that the network is not
-overfitting.
+overfitting. The test data contains around 5,000 examples and validation
+dataset contains around 6,000 examples.
 
 To get the code running, run `$ pip install -r requirements.txt` this
 will install all the required python packages needed to run my code.
