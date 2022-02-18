@@ -73,9 +73,6 @@ class TestLoader(unittest.TestCase):
                 batch_size=1)
         train_f, train_l = next(iter(loader_train))
 
-        print(train_f.float().dtype)
-        print(train_l.float().dtype)
-
         self.assertTrue(train_f.dtype == torch.Tensor(1).dtype)
         self.assertTrue(train_l.dtype == torch.Tensor(1).dtype)
 

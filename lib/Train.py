@@ -46,8 +46,7 @@ def Train(path_data):
     scheduler = ReduceLROnPlateau(optimiser, factor=0.5, patience=4,
             threshold=0.001)
     # Loss function
-    # lf = nn.BCELoss()
-    lf = nn.CrossEntropyLoss()
+    lf = nn.BCELoss()
     # write model to tensorboard
     writer.add_graph(model, torch.randn(1,50))
 
@@ -63,11 +62,11 @@ def Train(path_data):
 
             # FORWARD PASS
             # pass training features data through model
-            out = model(feats.float())
+            out = model(feats)
             # TODO need to take care of changin things to floats this
             # feels a bit hacky
             # calculate loss by comparing output with labels
-            loss_training = lf(out.float(), labels.float())
+            loss_training = lf(out, labels)
 
             # append training loss for this batch to training_losses
             losses_training.append(loss_training)
@@ -95,9 +94,9 @@ def Train(path_data):
             for valid_f, valid_l in loader_valid:
 
                 # pass batch of validation data through networ
-                out = model(valid_f.float())
+                out = model(valid_f)
                 # calculate loss
-                loss_valid = lf(out.float(), valid_l.float())
+                loss_valid = lf(out, valid_l)
                 # append loss to losses bin
                 losses_valid.append(loss_valid)
 
@@ -122,10 +121,10 @@ def Train(path_data):
             for test_f, test_l in loader_test:
 
                 # pass test batch through the model
-                out = model(test_f.float())
+                out = model(test_f)
 
                 # binarise the output, (y_i>0.5)->1, (y_j<=0.5)->0
-                out = torch.where(out>0.5, 1, 0)
+                out = torch.where(out>0.5, 1., 0.)
 
                 # check each sample of model output against test labels
                 for i in range(out.shape[0]):
