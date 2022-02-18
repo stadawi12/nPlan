@@ -3,6 +3,7 @@ from torch.utils.data import DataLoader
 from models import linear
 import torch.optim as optim
 import torch.nn as nn
+from torch.utils.tensorboard import SummaryWriter
 
 def loadData(path_data):
     pass
@@ -16,6 +17,8 @@ def Train(path_data):
         path to the data directory for example '../data'
 
     """
+    writer= SummaryWriter()
+
     
     # Instantiate object of dataset class for training data
     data_train= dataset(path_data, 'train')
@@ -27,6 +30,11 @@ def Train(path_data):
     # Initialise data loader with custom batch size and shuffle bool
     loader_valid = DataLoader(data_valid, batch_size = 1000, shuffle=False)
 
+    # Instantiate object of dataset class
+    data_test= dataset(path_data, 'test')
+    # Initialise data loader with custom batch size and shuffle bool
+    loader_test = DataLoader(data_test, batch_size = 1000, shuffle=False)
+
     # Initialise model
     # TODO allow for option to choose device: 'cpu', 'cuda:0'
     model = linear.Linear()
@@ -34,10 +42,13 @@ def Train(path_data):
     optimiser = optim.Adam(model.parameters(), lr=0.001)
     # Loss function
     lf = nn.BCELoss()
+    # write model to tensorboard
+    writer.add_graph(model, torch.randn(1,50))
 
     # Begin trining loop
     for e in range(50):
 
+        # TRAINING
         # Average value of training loss per epoch
         losses_training = []
 
@@ -60,9 +71,12 @@ def Train(path_data):
 
         # perform diagnostics after each epoch of training
         loss_training_avg = sum(losses_training)/len(losses_training)
-        writer.add_scalar("Loss/epoch", loss_training_avg, e)
+        writer.add_scalar("t_loss/epoch", loss_training_avg, e)
         print(f"E: {e}, loss: {loss_training_avg}")
 
+
+
+        # VALIDATION
         # Average value of validation loss per epoch
         losses_valid = []
 
@@ -74,18 +88,48 @@ def Train(path_data):
                 loss_valid = lf(out.float(), valid_l.float())
                 losses_valid.append(loss_valid)
         loss_valid_avg = sum(losses_valid)/len(losses_valid)
-        writer.add_scalar("Loss/epoch_v", loss_valid_avg, e)
+        writer.add_scalar("v_loss/epoch", loss_valid_avg, e)
+
+
+
+        # ACCURACY
+        # Test accuracy of network for each epoch, calculate the number
+        # of correct predictions
+        with torch.no_grad():
+            
+            # initialise counter at start of each epoch to 0
+            counter_correct = 0
+            # pass a batch of test data through the model
+            for test_f, test_l in loader_test:
+
+                # pass test batch through the model
+                out = model(test_f.float())
+
+                # binarise the output, (y_i>0.5)->1, (y_j<0.5)->0
+                out = torch.where(out>0.5, 1, 0)
+                for i in range(out.shape[0]):
+
+                    # check how many predictions are correct and
+                    # increment counter for every correct prediction
+                    if torch.equal(out[i], test_l[i]):
+
+                        # increment counter
+                        counter_correct += 1
+
+            # After passing all test data through the model add accuracy
+            # to tensorboard
+            # percentage_correct = counter_correct / len(data_test)
+            writer.add_scalar("accuracy", counter_correct, e)
+
+    # finish tensorboard writing
+    writer.flush()
 
 
 if __name__ == '__main__':
     import torch
-    from torch.utils.tensorboard import SummaryWriter
-
-    writer = SummaryWriter()
 
     torch.manual_seed(0)
 
     path_data = '../data'
 
     Train(path_data)
-    writer.flush()
