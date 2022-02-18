@@ -4,6 +4,11 @@ from models import linear
 import torch.optim as optim
 import torch.nn as nn
 from torch.utils.tensorboard import SummaryWriter
+from torch.optim.lr_scheduler import ReduceLROnPlateau
+
+def get_lr(optimiser):
+    for param_group in optimiser.param_groups:
+        return param_group['lr']
 
 def Train(path_data):
     """This function takes care of training a model
@@ -38,6 +43,8 @@ def Train(path_data):
     model = linear.Linear()
     # Specify optimiser
     optimiser = optim.Adam(model.parameters(), lr=0.01)
+    scheduler = ReduceLROnPlateau(optimiser, factor=0.5, patience=4,
+            threshold=0.001)
     # Loss function
     lf = nn.BCELoss()
     # write model to tensorboard
@@ -135,10 +142,12 @@ def Train(path_data):
             writer.add_scalar("accuracy", counter_correct, e)
 
         # END OF EPOCH -------------------------------------------------
+        scheduler.step(loss_training_avg)
 
         # At the end of each epoch print a statement to the console
-        print(f"E: {e}, loss: {loss_training_avg}, Accuracy: "
-                + f"{counter_correct}/{len(data_test)}")
+        print(f"E: {e}, loss: {loss_training_avg}, Accuracy: " +
+                f"{counter_correct}/{len(data_test)}, " +
+                f"lr={get_lr(optimiser)}")
 
     # finish tensorboard writing
     writer.flush()
