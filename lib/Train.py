@@ -6,19 +6,39 @@ import torch.nn as nn
 from torch.utils.tensorboard import SummaryWriter
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 
+# TODO need to write some tests for the Train function
+
+# TODO be able to control learning rate and other hyperparameters
+# from an input file.
+
+# TODO allow for different models to be used during training, different
+# loss functions 
+
+# TODO I wanted to see if I can split the Validation and Testing
+# sections of the Train function into their own functions as to avoid
+# creating spaghetting code
+
 def get_lr(optimiser):
     for param_group in optimiser.param_groups:
         return param_group['lr']
 
-def Train(path_data):
+def Train(path_data: str, input_data: dict):
     """This function takes care of training a model
 
     Parameters
     ----------
     path_data : str
         path to the data directory for example '../data'
+    input_data: dict
+        a dictionary containig input parameters
 
     """
+    # INPUTS
+    n_epochs   = input_data["n_epochs"]
+    batch_size = input_data["batch_size"]
+    lr         = input_data["lr"]
+    device     = input_data["device"]
+
     # intialise tensorboard SummaryWriter for storing training
     # diagnostics
     writer = SummaryWriter()
@@ -26,23 +46,26 @@ def Train(path_data):
     # Instantiate object of dataset class for training data
     data_train   = dataset(path_data, 'train')
     # Initialise data loader with custom batch size and shuffle bool
-    loader_train = DataLoader(data_train, batch_size = 1000, shuffle=False)
+    loader_train = DataLoader(data_train, batch_size=batch_size, 
+            shuffle=False)
 
     # Instantiate object of dataset class for validatiaon data
     data_valid   = dataset(path_data, 'valid')
     # Initialise data loader with custom batch size and shuffle bool
-    loader_valid = DataLoader(data_valid, batch_size = 1000, shuffle=False)
+    loader_valid = DataLoader(data_valid, batch_size=batch_size, 
+            shuffle=False)
 
     # Instantiate object of dataset class for testing data
     data_test   = dataset(path_data, 'test')
     # Initialise data loader with custom batch size and shuffle bool
-    loader_test = DataLoader(data_test, batch_size = 1000, shuffle=False)
+    loader_test = DataLoader(data_test, batch_size=batch_size, 
+            shuffle=False)
 
     # Initialise model
     # TODO allow for option to choose device: 'cpu', 'cuda:0'
     model = linear.Linear()
     # Specify optimiser
-    optimiser = optim.Adam(model.parameters(), lr=0.01)
+    optimiser = optim.Adam(model.parameters(), lr=lr)
     scheduler = ReduceLROnPlateau(optimiser, factor=0.5, patience=4,
             threshold=0.001)
     # Loss function
@@ -51,7 +74,7 @@ def Train(path_data):
     writer.add_graph(model, torch.randn(1,50))
 
     # Begin trining loop
-    for e in range(50):
+    for e in range(n_epochs):
 
         # TRAINING -----------------------------------------------------
         # Average value of training loss per epoch
@@ -63,8 +86,6 @@ def Train(path_data):
             # FORWARD PASS
             # pass training features data through model
             out = model(feats)
-            # TODO need to take care of changin things to floats this
-            # feels a bit hacky
             # calculate loss by comparing output with labels
             loss_training = lf(out, labels)
 
@@ -154,9 +175,13 @@ def Train(path_data):
 
 if __name__ == '__main__':
     import torch
+    from Inputs import Read_Input
+
+    path_input = '../inputs.yaml'
+    path_data = '../data'
+
+    input_data = Read_Input(path_input)
 
     torch.manual_seed(0)
 
-    path_data = '../data'
-
-    Train(path_data)
+    Train(path_data, input_data)

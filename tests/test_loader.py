@@ -8,6 +8,8 @@ import numpy as np
 import torch
 
 class TestLoader(unittest.TestCase):
+    """Here we will focus on testing the loader module designed for
+    loading data for training, testing and validating"""
 
     PATH_DATA = '../data'
 
@@ -15,9 +17,13 @@ class TestLoader(unittest.TestCase):
         # test to see if we can initialise the dataset object correctly
         # and see if the attributes are correctly assigned
         data_train = dataset(self.PATH_DATA, 'train')
+        data_test = dataset(self.PATH_DATA, 'test')
+        data_valid = dataset(self.PATH_DATA, 'valid')
 
         self.assertEqual(data_train.path_data, '../data')
         self.assertEqual(data_train.data_for, 'train')
+        self.assertEqual(data_test.data_for, 'test')
+        self.assertEqual(data_valid.data_for, 'valid')
 
     def test_test_data(self):
         # test to see if we can also load test data correctly

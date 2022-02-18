@@ -1,5 +1,5 @@
 # Training inputs
-epochs : 1
+n_epochs : 2
 batch_size : 1000
-lr : 0.001
+lr : 0.01
 device: 'cpu'

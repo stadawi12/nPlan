@@ -19,3 +19,9 @@ def Create_Parser():
             help = MSG_ACTION)
 
     return parser.parse_args()
+
+if __name__ == "__main__":
+
+    path_input = '../inputs.yaml'
+    input_data = Read_Input(path_input)
+    print(input_data)

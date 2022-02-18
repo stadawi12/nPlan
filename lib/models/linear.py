@@ -18,6 +18,8 @@ def close(in_c, out_c):
     return conv
 
 class Linear(nn.Module):
+    """This is a linear neural network with linear layers, very simple,
+    no skip connections just a standard model"""
 
     def __init__(self):
         super(Linear, self).__init__()
@@ -41,6 +43,7 @@ if __name__ == "__main__":
     import torch
     n_features = 50
     L = Linear()
-    inpt = torch.randn(45000,n_features)
+    inpt = torch.randn(2,n_features)
     out = L(inpt)
-    # print(out,"\n", out.shape)
+    print("Input shape:", inpt.shape)
+    print("Output shape:", out.shape)
