@@ -33,8 +33,10 @@ def Train(path_data):
     # Loss function
     lf = nn.BCELoss()
 
+    # Begin trining loop
     for e in range(50):
 
+        # Collect training loss for each epoch
         training_loss = []
 
         for feats, labels in loader_train:
@@ -50,8 +52,13 @@ def Train(path_data):
 
 if __name__ == '__main__':
     import torch
+    from torch.utils.tensorboard import SummaryWriter
+
+    writer = SummaryWriter()
+
     torch.manual_seed(0)
 
     path_data = '../data'
 
     Train(path_data)
+    writer.flush()
