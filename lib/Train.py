@@ -42,6 +42,10 @@ def Model(name_model: str):
         from models import normLinear
         return normLinear.NormLinear()
 
+    elif name_model == 'convNet':
+        from models import convNet
+        return convNet.UNet()
+
 def Loss(loss_name: str):
     """ Function designed to allow for choosing different loss functions
     during training. We need to ensure that a loss function is
@@ -137,6 +141,7 @@ def Train(path_data: str, input_data: dict):
         # Average value of training loss per epoch
         losses_training = []
 
+        batch_number = 0
         # Minibatch loop
         for feats, labels in loader_train:
 
@@ -153,6 +158,9 @@ def Train(path_data: str, input_data: dict):
             model.zero_grad()
             loss_training.backward()
             optimiser.step()
+            print(f"batch: {batch_number}")
+            batch_number += 1
+
 
         # perform diagnostics after each training epoch
         # calculate loss average of epoch

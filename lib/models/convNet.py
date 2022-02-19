@@ -1,4 +1,5 @@
 import torch.nn as nn
+import torch
 
 def crop_img(tensor, target):
     """
@@ -40,12 +41,12 @@ def conv(in_c, out_c):
             )
     return conv
 
-class Linear(nn.Module):
+class UNet(nn.Module):
     """This is a linear neural network with linear layers, very simple,
     no skip connections just a standard model"""
 
     def __init__(self):
-        super(Linear, self).__init__()
+        super(UNet, self).__init__()
 
         self.linear1 = linear(50, 160)
         self.linear2 = linear(160, 64*64)
@@ -111,8 +112,8 @@ class Linear(nn.Module):
 if __name__ == "__main__":
     import torch
     n_features = 50
-    L = Linear()
-    inpt = torch.randn(100,n_features)
+    L = UNet()
+    inpt = torch.randn(2,n_features)
     out = L(inpt)
     print("Input shape:", inpt.shape)
     print("Output shape:", out.shape)
