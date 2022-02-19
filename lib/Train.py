@@ -5,6 +5,7 @@ import torch.optim as optim
 import torch.nn as nn
 from torch.utils.tensorboard import SummaryWriter
 from torch.optim.lr_scheduler import ReduceLROnPlateau
+import torch
 
 # TODO need to write some tests for the Train function
 

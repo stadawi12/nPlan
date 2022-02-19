@@ -5,3 +5,6 @@
 data/*
 # But do track the data directory itself, only not its contents
 !data/.gitkeep
+
+# ignore the tensorboard directory
+runs
