@@ -1,16 +1,11 @@
 # TODO when choosing gpu as a device find out what happens with 
 # validation and testing parts of training.
 # Training inputs
-n_epochs   : 3 # int: number of epochs
+n_epochs   : 50 # int: number of epochs
 batch_size : 1000 # int: batch size
 shuffle    : True # bool: Shuffle the data after each epoch
 lr         : 0.01 # float: learning rate
 device     : 'cpu' # str: which device to use
-
-# TODO make this functional
-# Model choice, options:
-# ['Linear']
-model : 'Linear' # str: model to use for training
 
 # Scheduler options 
 # The scheduler controls the learning rate during training, if it
@@ -20,6 +15,18 @@ factor    : 0.5 # float: learning rate multiplier
 patience  : 4 # int: how many epochs to wait
 threshold : 0.001 # float: if loss hasn't changed by more than this value
 
-# TODO make this functional
-# Loss function
+# TODO this is not functional, make this functional
+# Seed for training, this option lets you control the seed from which to
+# start the model each time rather than letting the starting point be
+# random each time, this can be used for testing the effect of different
+# hyperparameters
+use_seed : True # bool: option if we should use a seed or not
+seed     : 0 # int: choose seed value
+
+# Model choice, options:
+# ['Linear', 'smallLinear']
+model : 'smallLinear' # str: model to use for training
+
+# Loss function, options:
+# ['BCELoss']
 loss : 'BCELoss' # str: choose the loss function to use

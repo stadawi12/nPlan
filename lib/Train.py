@@ -1,6 +1,5 @@
 from loader import dataset
 from torch.utils.data import DataLoader
-from models import linear
 import torch.optim as optim
 import torch.nn as nn
 from torch.utils.tensorboard import SummaryWriter
@@ -9,23 +8,56 @@ import torch
 
 # TODO need to write some tests for the Train function
 
-# TODO allow for different models to be used during training, different
-# loss functions 
-
 # TODO I wanted to see if I can split the Validation and Testing
 # sections of the Train function into their own functions as to avoid
 # creating spaghetting code
 
-def Model(model_name):
-    """Function desgined for choosing a model for training"""
+def Model(name_model: str):
+    """Function desgined for choosing different built models for 
+    training. Models can be found in 'models' directory. We need to make
+    sure that the model is appropriate for our training data, the
+    minimum requirement is that a model accepts tensors of shape [m, 50] 
+    and outputs tensors of size [m, 121].
 
-    if model_name == 'Linear':
+    Parameters
+    ----------
+    name_model : str
+        name of model to use, choices so far: ['Linear', 'smallLinear']
+
+    Returns
+    -------
+    model : torch model
+        the wanted model ready for training
+    """
+
+    if name_model == 'Linear':
         from models import linear
         return linear.Linear()
 
-    elif model_name == 'smallLinear':
+    elif name_model == 'smallLinear':
         from models import smallLinear
         return smallLinear.SmallLinear()
+
+def Loss(loss_name: str):
+    """ Function designed to allow for choosing different loss functions
+    during training. We need to ensure that a loss function is
+    appropriate for our training data.
+    
+    Parameters
+    ----------
+    loss_name : str
+        name of loss function, choices so far: ['BCELoss']
+
+    Returns
+    -------
+    loss function : torch loss function
+        the wanted loss function
+    """
+
+
+    if loss_name == 'BCELoss':
+        return nn.BCELoss()
+
 
 def get_lr(optimiser):
     for param_group in optimiser.param_groups:
@@ -51,6 +83,7 @@ def Train(path_data: str, input_data: dict):
     patience   = input_data["patience"]
     threshold  = input_data["threshold"]
     model      = input_data["model"]
+    loss  = input_data["loss"]
 
     # intialise tensorboard SummaryWriter for storing training
     # diagnostics
@@ -74,8 +107,8 @@ def Train(path_data: str, input_data: dict):
     loader_test = DataLoader(data_test, batch_size=batch_size, 
             shuffle=False)
 
-    # Initialise model
     # TODO allow for option to choose device: 'cpu', 'cuda:0'
+    # Initialise model
     model = Model(model)
 
     # Specify optimiser
@@ -83,8 +116,8 @@ def Train(path_data: str, input_data: dict):
     scheduler = ReduceLROnPlateau(optimiser, factor=factor,
             patience=patience, threshold=threshold)
 
-    # Loss function
-    lf = nn.BCELoss()
+    # Specify the loss function
+    lf = Loss(loss)
 
     # write model to tensorboard
     writer.add_graph(model, torch.randn(1,50))
