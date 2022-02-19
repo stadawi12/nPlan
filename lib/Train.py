@@ -38,6 +38,10 @@ def Model(name_model: str):
         from models import smallLinear
         return smallLinear.SmallLinear()
 
+    elif name_model == 'normLinear':
+        from models import normLinear
+        return normLinear.NormLinear()
+
 def Loss(loss_name: str):
     """ Function designed to allow for choosing different loss functions
     during training. We need to ensure that a loss function is
@@ -75,15 +79,19 @@ def Train(path_data: str, input_data: dict):
 
     """
     # INPUTS
+    # training parameters
     n_epochs   = input_data["n_epochs"]
     batch_size = input_data["batch_size"]
     lr         = input_data["lr"]
     device     = input_data["device"]
+    # scheduler parameters
     factor     = input_data["factor"]
     patience   = input_data["patience"]
     threshold  = input_data["threshold"]
+    # model to use
     model      = input_data["model"]
-    loss  = input_data["loss"]
+    # loss function to use
+    loss       = input_data["loss"]
 
     # intialise tensorboard SummaryWriter for storing training
     # diagnostics
@@ -215,7 +223,7 @@ def Train(path_data: str, input_data: dict):
         scheduler.step(loss_training_avg)
 
         # At the end of each epoch print a statement to the console
-        print(f"E: {e}, loss: {loss_training_avg}, Accuracy: " +
+        print(f"E: {e}, loss: {loss_training_avg:.5f}, Accuracy: " +
                 f"{counter_correct}/{len(data_test)}, " +
                 f"lr={get_lr(optimiser)}")
 

@@ -4,7 +4,7 @@
 n_epochs   : 50 # int: number of epochs
 batch_size : 1000 # int: batch size
 shuffle    : True # bool: Shuffle the data after each epoch
-lr         : 0.01 # float: learning rate
+lr         : 0.01 # float: initial learning rate
 device     : 'cpu' # str: which device to use
 
 # Scheduler options 
@@ -24,8 +24,8 @@ use_seed : True # bool: option if we should use a seed or not
 seed     : 0 # int: choose seed value
 
 # Model choice, options:
-# ['Linear', 'smallLinear']
-model : 'smallLinear' # str: model to use for training
+# ['Linear', 'smallLinear', 'normLinear']
+model : 'Linear' # str: model to use for training
 
 # Loss function, options:
 # ['BCELoss']

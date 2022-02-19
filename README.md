@@ -1,3 +1,6 @@
+TODO: build a convolutional neural network and test against the linear
+neural network.
+
 This is an assignment given by nPlan as part of a hiring process. The
 task here is to train a neural network on the provided features and
 labels. 
