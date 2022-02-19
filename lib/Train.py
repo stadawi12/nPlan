@@ -16,6 +16,17 @@ import torch
 # sections of the Train function into their own functions as to avoid
 # creating spaghetting code
 
+def Model(model_name):
+    """Function desgined for choosing a model for training"""
+
+    if model_name == 'Linear':
+        from models import linear
+        return linear.Linear()
+
+    elif model_name == 'smallLinear':
+        from models import smallLinear
+        return smallLinear.SmallLinear()
+
 def get_lr(optimiser):
     for param_group in optimiser.param_groups:
         return param_group['lr']
@@ -39,6 +50,7 @@ def Train(path_data: str, input_data: dict):
     factor     = input_data["factor"]
     patience   = input_data["patience"]
     threshold  = input_data["threshold"]
+    model      = input_data["model"]
 
     # intialise tensorboard SummaryWriter for storing training
     # diagnostics
@@ -64,7 +76,7 @@ def Train(path_data: str, input_data: dict):
 
     # Initialise model
     # TODO allow for option to choose device: 'cpu', 'cuda:0'
-    model = linear.Linear()
+    model = Model(model)
 
     # Specify optimiser
     optimiser = optim.Adam(model.parameters(), lr=lr)
