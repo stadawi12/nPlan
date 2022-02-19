@@ -36,6 +36,9 @@ def Train(path_data: str, input_data: dict):
     batch_size = input_data["batch_size"]
     lr         = input_data["lr"]
     device     = input_data["device"]
+    factor     = input_data["factor"]
+    patience   = input_data["patience"]
+    threshold  = input_data["threshold"]
 
     # intialise tensorboard SummaryWriter for storing training
     # diagnostics
@@ -62,12 +65,15 @@ def Train(path_data: str, input_data: dict):
     # Initialise model
     # TODO allow for option to choose device: 'cpu', 'cuda:0'
     model = linear.Linear()
+
     # Specify optimiser
     optimiser = optim.Adam(model.parameters(), lr=lr)
-    scheduler = ReduceLROnPlateau(optimiser, factor=0.5, patience=4,
-            threshold=0.001)
+    scheduler = ReduceLROnPlateau(optimiser, factor=factor,
+            patience=patience, threshold=threshold)
+
     # Loss function
     lf = nn.BCELoss()
+
     # write model to tensorboard
     writer.add_graph(model, torch.randn(1,50))
 
