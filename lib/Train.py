@@ -105,23 +105,24 @@ def Train(path_data: str, input_data: dict):
     data_train   = dataset(path_data, 'train')
     # Initialise data loader with custom batch size and shuffle bool
     loader_train = DataLoader(data_train, batch_size=batch_size, 
-            shuffle=False)
+            shuffle=False, pin_memory=True)
 
     # Instantiate object of dataset class for validatiaon data
     data_valid   = dataset(path_data, 'valid')
     # Initialise data loader with custom batch size and shuffle bool
     loader_valid = DataLoader(data_valid, batch_size=batch_size, 
-            shuffle=False)
+            shuffle=False, pin_memory=True)
 
     # Instantiate object of dataset class for testing data
     data_test   = dataset(path_data, 'test')
     # Initialise data loader with custom batch size and shuffle bool
     loader_test = DataLoader(data_test, batch_size=batch_size, 
-            shuffle=False)
+            shuffle=False, pin_memory=True)
 
     # TODO allow for option to choose device: 'cpu', 'cuda:0'
     # Initialise model
     model = Model(model)
+    model.to(device)
 
     # Specify optimiser
     optimiser = optim.Adam(model.parameters(), lr=lr)
@@ -132,7 +133,7 @@ def Train(path_data: str, input_data: dict):
     lf = Loss(loss)
 
     # write model to tensorboard
-    writer.add_graph(model, torch.randn(1,50))
+    writer.add_graph(model, torch.randn(1,50).to(device))
 
     # Begin trining loop
     for e in range(n_epochs):
@@ -147,9 +148,10 @@ def Train(path_data: str, input_data: dict):
 
             # FORWARD PASS
             # pass training features data through model
-            out = model(feats)
+            #TODO .to device feels hacky
+            out = model(feats.to(device))
             # calculate loss by comparing output with labels
-            loss_training = lf(out, labels)
+            loss_training = lf(out, labels.to(device))
 
             # append training loss for this batch to training_losses
             losses_training.append(loss_training)
@@ -179,9 +181,9 @@ def Train(path_data: str, input_data: dict):
             for valid_f, valid_l in loader_valid:
 
                 # pass batch of validation data through networ
-                out = model(valid_f)
+                out = model(valid_f.to(device))
                 # calculate loss
-                loss_valid = lf(out, valid_l)
+                loss_valid = lf(out, valid_l.to(device))
                 # append loss to losses bin
                 losses_valid.append(loss_valid)
 
@@ -206,7 +208,7 @@ def Train(path_data: str, input_data: dict):
             for test_f, test_l in loader_test:
 
                 # pass test batch through the model
-                out = model(test_f)
+                out = model(test_f.to(device))
 
                 # binarise the output, (y_i>0.5)->1, (y_j<=0.5)->0
                 out = torch.where(out>0.5, 1., 0.)
@@ -216,7 +218,7 @@ def Train(path_data: str, input_data: dict):
 
                     # check how many predictions are correct and
                     # increment counter for every correct prediction
-                    if torch.equal(out[i], test_l[i]):
+                    if torch.equal(out[i], test_l[i].to(device)):
 
                         # increment counter
                         counter_correct += 1

@@ -6,7 +6,7 @@ batch_size : 1000 # int: batch size
 shuffle    : True # bool: Shuffle the data after each epoch
 lr         : 0.01 # float: initial learning rate
 # TODO choosing a device is not functional yet
-device     : 'cpu' # str: which device to use
+device     : 'cuda:0' # str: which device to use
 
 # Scheduler options 
 # The scheduler controls the learning rate during training, if it
