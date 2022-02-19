@@ -158,7 +158,6 @@ def Train(path_data: str, input_data: dict):
             model.zero_grad()
             loss_training.backward()
             optimiser.step()
-            print(f"batch: {batch_number}")
             batch_number += 1
 
 

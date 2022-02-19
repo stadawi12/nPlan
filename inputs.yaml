@@ -1,8 +1,8 @@
 # TODO when choosing gpu as a device find out what happens with 
 # validation and testing parts of training.
 # Training inputs
-n_epochs   : 1 # int: number of epochs
-batch_size : 100 # int: batch size
+n_epochs   : 10 # int: number of epochs
+batch_size : 1000 # int: batch size
 shuffle    : True # bool: Shuffle the data after each epoch
 lr         : 0.01 # float: initial learning rate
 # TODO choosing a device is not functional yet
@@ -26,7 +26,7 @@ seed     : 0 # int: choose seed value
 
 # Model choice, options:
 # ['Linear', 'smallLinear', 'normLinear', 'convNet']
-model : 'convNet' # str: model to use for training
+model : 'Linear' # str: model to use for training
 
 # Loss function, options:
 # ['BCELoss']
