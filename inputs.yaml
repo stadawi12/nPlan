@@ -3,17 +3,21 @@
 # take extra care here and balance the data first and load 
 # only a portion of each class.
 # Number of examples, set to None if want to load all
-m_train : null # number of examples for training
-m_test  : null # number of examples for testing
-m_valid : null # number of examples for validation
+m_train : 1000 # number of examples for training
+m_test  : 100 # number of examples for testing
+m_valid : 100 # number of examples for validation
 
 # Training hyperparameters
-n_epochs : 10 # int: number of epochs
+n_epochs : 50 # int: number of epochs
 lr       : 0.01 # float: initial learning rate
 device   : 'cpu' # str: which device to use 'cpu' or ''
 
 # DataLoader options
+<<<<<<< HEAD
 batch_size  : 1000 # int: batch size
+=======
+batch_size  : 50 # int: batch size
+>>>>>>> 2a8c80965488291685078938fd4b41a8e2e3f115
 shuffle     : True # Do you want to shuffle the data after each epoch?
 num_workers : 4 # number of workers for DataLoader
 
