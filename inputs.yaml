@@ -1,12 +1,13 @@
-# TODO when choosing gpu as a device find out what happens with 
-# validation and testing parts of training.
-# Training inputs
+# Training hyperparameters
 n_epochs   : 10 # int: number of epochs
-batch_size : 1000 # int: batch size
+batch_size : 100 # int: batch size
 shuffle    : True # bool: Shuffle the data after each epoch
 lr         : 0.01 # float: initial learning rate
-# TODO choosing a device is not functional yet
-device     : 'cuda:0' # str: which device to use
+device     : 'cuda:0' # str: which device to use 'cpu' or ''
+
+# DataLoader options
+shuffle : True # Do you want to shuffle the data after each epoch?
+num_workers : 2 # number of workers for DataLoader
 
 # Scheduler options 
 # The scheduler controls the learning rate during training, if it
@@ -14,7 +15,7 @@ device     : 'cuda:0' # str: which device to use
 # it will reduce the learning rate by some factor
 factor    : 0.5 # float: learning rate multiplier
 patience  : 4 # int: how many epochs to wait
-threshold : 0.001 # float: if loss hasn't changed by more than this value
+threshold : 0.001 # float: if loss hasn't changed by more than this val.
 
 # TODO this is not functional, make this functional
 # Seed for training, this option lets you control the seed from which to
@@ -26,7 +27,7 @@ seed     : 0 # int: choose seed value
 
 # Model choice, options:
 # ['Linear', 'smallLinear', 'normLinear', 'convNet']
-model : 'Linear' # str: model to use for training
+model : 'convNet' # str: model to use for training
 
 # Loss function, options:
 # ['BCELoss']

@@ -82,7 +82,22 @@ class TestLoader(unittest.TestCase):
         self.assertTrue(train_f.dtype == torch.Tensor(1).dtype)
         self.assertTrue(train_l.dtype == torch.Tensor(1).dtype)
 
+    def test_loader_custom_example_amount(self):
 
+        # First, load data using my loader module
+        data_train_1k = dataset(self.PATH_DATA, 'train', m=1000)
+        data_train_all = dataset(self.PATH_DATA, 'train', m=None)
+
+        data_test_1k = dataset(self.PATH_DATA, 'test', m=1000)
+
+        data_valid_1k = dataset(self.PATH_DATA, 'valid', m=1000)
+
+        self.assertTrue(len(data_train_1k) == 1000)
+        self.assertTrue(len(data_train_all) == 44906)
+
+        self.assertTrue(len(data_test_1k) == 1000)
+
+        self.assertTrue(len(data_valid_1k) == 1000)
 
 if __name__ == "__main__":
     unittest.main()

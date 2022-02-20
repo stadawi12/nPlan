@@ -88,6 +88,11 @@ def Train(path_data: str, input_data: dict):
     batch_size = input_data["batch_size"]
     lr         = input_data["lr"]
     device     = input_data["device"]
+    device     = torch.device(device)
+    print(torch.cuda.is_available())
+    print(torch.cuda.current_device())
+    print(torch.cuda.device(0))
+    print(torch.cuda.get_device_name(0))
     # scheduler parameters
     factor     = input_data["factor"]
     patience   = input_data["patience"]
@@ -123,6 +128,7 @@ def Train(path_data: str, input_data: dict):
     # Initialise model
     model = Model(model)
     model.to(device)
+    print(model)
 
     # Specify optimiser
     optimiser = optim.Adam(model.parameters(), lr=lr)
@@ -133,7 +139,7 @@ def Train(path_data: str, input_data: dict):
     lf = Loss(loss)
 
     # write model to tensorboard
-    writer.add_graph(model, torch.randn(1,50).to(device))
+    writer.add_graph(model, torch.randn(1,50, device=device))
 
     # Begin trining loop
     for e in range(n_epochs):

@@ -13,7 +13,7 @@ class dataset(Dataset):
 
     Need to define __len__() function and the __getitem__() function."""
 
-    def __init__(self, path_data: str, data_for: str):
+    def __init__(self, path_data: str, data_for: str, m: int = None):
 
         """
         Parameters
@@ -23,6 +23,8 @@ class dataset(Dataset):
         data_for : str
             choose to load 'train', 'test' or 'valid' datasets of
             features and labels
+        m : int
+            number of examples to load
         """
         
         # path to global data directory
@@ -37,8 +39,17 @@ class dataset(Dataset):
                 self.data_for+'_labels.npy')
 
         # load the features and lables for a given dataset
-        self.data_feats = np.load(path_feats)
-        self.data_labels = np.load(path_labels)
+        # if m is specified, only load m examples, if m is None, 
+        # load all examples
+        if m != None:
+            self.data_feats = np.load(path_feats)
+            self.data_labels = np.load(path_labels)
+
+            self.data_feats = np.load(path_feats)[:m]
+            self.data_labels = np.load(path_labels)[:m]
+        else:
+            self.data_feats = np.load(path_feats)
+            self.data_labels = np.load(path_labels)
 
         # Assert that length of features and labels has to be the same
         assert self.data_feats.shape[0] == self.data_labels.shape[0], \
@@ -65,7 +76,7 @@ if __name__ == '__main__':
     # Path to train_feats.npy file with node features data
     path = '../data'
     # Instantiate object of dataset class
-    tf = dataset(path, 'train')
+    tf = dataset(path, 'train', m=1000)
     print(len(tf))
 
     # Initialise data loader with custom batch size and shuffle bool
