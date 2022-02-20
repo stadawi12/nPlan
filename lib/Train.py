@@ -5,6 +5,7 @@ import torch.nn as nn
 from torch.utils.tensorboard import SummaryWriter
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 import torch
+import math
 
 # TODO need to write some tests for the Train function
 
@@ -102,7 +103,7 @@ def Train(path_data: str, input_data: dict):
     patience   = input_data["patience"]
     threshold  = input_data["threshold"]
     # model to use
-    model      = input_data["model"]
+    model_name = input_data["model"]
     # loss function to use
     loss       = input_data["loss"]
 
@@ -130,7 +131,7 @@ def Train(path_data: str, input_data: dict):
 
     # TODO allow for option to choose device: 'cpu', 'cuda:0'
     # Initialise model
-    model = Model(model)
+    model = Model(model_name)
     model.to(device)
     print(model)
 
@@ -152,7 +153,11 @@ def Train(path_data: str, input_data: dict):
         # Average value of training loss per epoch
         losses_training = []
 
+        # initialise batch_number as 0
         batch_number = 0
+        # calculate number of batches
+        number_of_batches = math.ceil(len(data_train)/batch_size)
+
         # Minibatch loop
         for feats, labels in loader_train:
 
@@ -171,7 +176,8 @@ def Train(path_data: str, input_data: dict):
             loss_training.backward()
             optimiser.step()
             batch_number += 1
-        print(f"Batch: {batch_number}")
+            if model_name == 'convNet':
+                print(f"Batch: {batch_number}/{number_of_batches}")
 
 
         # perform diagnostics after each training epoch
