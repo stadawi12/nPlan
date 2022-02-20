@@ -83,16 +83,20 @@ def Train(path_data: str, input_data: dict):
 
     """
     # INPUTS
+    # number of examples
+    m_train    = input_data["m_train"]
+    m_test     = input_data["m_test"]
+    m_valid    = input_data["m_valid"]
     # training parameters
     n_epochs   = input_data["n_epochs"]
     batch_size = input_data["batch_size"]
     lr         = input_data["lr"]
+    # DataLoader parameters
+    shuffle    = input_data["shuffle"]
+    num_workers= input_data["num_workers"]
+    # device
     device     = input_data["device"]
     device     = torch.device(device)
-    print(torch.cuda.is_available())
-    print(torch.cuda.current_device())
-    print(torch.cuda.device(0))
-    print(torch.cuda.get_device_name(0))
     # scheduler parameters
     factor     = input_data["factor"]
     patience   = input_data["patience"]
@@ -107,22 +111,22 @@ def Train(path_data: str, input_data: dict):
     writer = SummaryWriter()
 
     # Instantiate object of dataset class for training data
-    data_train   = dataset(path_data, 'train')
+    data_train   = dataset(path_data, 'train', m=m_train)
     # Initialise data loader with custom batch size and shuffle bool
     loader_train = DataLoader(data_train, batch_size=batch_size, 
-            shuffle=False, pin_memory=True)
+            shuffle=shuffle, pin_memory=True, num_workers=num_workers)
 
     # Instantiate object of dataset class for validatiaon data
-    data_valid   = dataset(path_data, 'valid')
+    data_valid   = dataset(path_data, 'valid', m=m_valid)
     # Initialise data loader with custom batch size and shuffle bool
     loader_valid = DataLoader(data_valid, batch_size=batch_size, 
-            shuffle=False, pin_memory=True)
+            shuffle=shuffle, pin_memory=True, num_workers=num_workers)
 
     # Instantiate object of dataset class for testing data
-    data_test   = dataset(path_data, 'test')
+    data_test   = dataset(path_data, 'test', m_test)
     # Initialise data loader with custom batch size and shuffle bool
     loader_test = DataLoader(data_test, batch_size=batch_size, 
-            shuffle=False, pin_memory=True)
+            shuffle=shuffle, pin_memory=True, num_workers=num_workers)
 
     # TODO allow for option to choose device: 'cpu', 'cuda:0'
     # Initialise model
@@ -167,6 +171,7 @@ def Train(path_data: str, input_data: dict):
             loss_training.backward()
             optimiser.step()
             batch_number += 1
+        print(f"Batch: {batch_number}")
 
 
         # perform diagnostics after each training epoch

@@ -1,13 +1,21 @@
+# TODO the data might not be balanced in which case we 
+# cannot just choose the first 1000 examples, perhaps we should 
+# take extra care here and balance the data first and load 
+# only a portion of each class.
+# Number of examples, set to None if want to load all
+m_train : null # number of examples for training
+m_test  : null # number of examples for testing
+m_valid : null # number of examples for validation
+
 # Training hyperparameters
-n_epochs   : 10 # int: number of epochs
-batch_size : 100 # int: batch size
-shuffle    : True # bool: Shuffle the data after each epoch
-lr         : 0.01 # float: initial learning rate
-device     : 'cuda:0' # str: which device to use 'cpu' or ''
+n_epochs : 50 # int: number of epochs
+lr       : 0.01 # float: initial learning rate
+device   : 'cuda:0' # str: which device to use 'cpu' or ''
 
 # DataLoader options
-shuffle : True # Do you want to shuffle the data after each epoch?
-num_workers : 2 # number of workers for DataLoader
+batch_size  : 1000 # int: batch size
+shuffle     : True # Do you want to shuffle the data after each epoch?
+num_workers : 4 # number of workers for DataLoader
 
 # Scheduler options 
 # The scheduler controls the learning rate during training, if it
@@ -27,7 +35,7 @@ seed     : 0 # int: choose seed value
 
 # Model choice, options:
 # ['Linear', 'smallLinear', 'normLinear', 'convNet']
-model : 'convNet' # str: model to use for training
+model : 'Linear' # str: model to use for training
 
 # Loss function, options:
 # ['BCELoss']

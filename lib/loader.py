@@ -41,15 +41,15 @@ class dataset(Dataset):
         # load the features and lables for a given dataset
         # if m is specified, only load m examples, if m is None, 
         # load all examples
-        if m != None:
+        if m == None:
+            self.data_feats = np.load(path_feats)
+            self.data_labels = np.load(path_labels)
+        else:
             self.data_feats = np.load(path_feats)
             self.data_labels = np.load(path_labels)
 
             self.data_feats = np.load(path_feats)[:m]
             self.data_labels = np.load(path_labels)[:m]
-        else:
-            self.data_feats = np.load(path_feats)
-            self.data_labels = np.load(path_labels)
 
         # Assert that length of features and labels has to be the same
         assert self.data_feats.shape[0] == self.data_labels.shape[0], \
