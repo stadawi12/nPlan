@@ -176,8 +176,8 @@ def Train(path_data: str, input_data: dict):
             loss_training.backward()
             optimiser.step()
             batch_number += 1
-            if model_name == 'convNet':
-                print(f"Batch: {batch_number}/{number_of_batches}")
+            # if model_name == 'convNet':
+            #     print(f"Batch: {batch_number}/{number_of_batches}")
 
 
         # perform diagnostics after each training epoch
