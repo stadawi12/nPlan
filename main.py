@@ -12,13 +12,17 @@ if __name__ == '__main__':
     args = Create_Parser()
     input_data = Read_Input('inputs.yaml')
 
-    use_seed: bool = input_data["use_seed"]
-    seed: int      = input_data["seed"]
+    use_seed: bool   = input_data["use_seed"]
+    seed: int        = input_data["seed"]
+    record_run: bool = input_data["record_run"]
 
     if args.action == 'train':
 
         path_data = 'data'
         input_data = Read_Input('inputs.yaml')
+
+        if record_run == False:
+            print("WARNING: run will NOT be recorded!")
 
         
         if use_seed:

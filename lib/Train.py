@@ -43,10 +43,6 @@ def Model(name_model: str):
         from models import normLinear
         return normLinear.NormLinear()
 
-    elif name_model == 'convNet':
-        from models import convNet
-        return convNet.UNet()
-
     elif name_model == 'linRes':
         from models import linRes
         return linRes.LinRes()
@@ -88,32 +84,36 @@ def Train(path_data: str, input_data: dict):
 
     """
     # INPUTS
-    # number of examples
     m_train    = input_data["m_train"]
     m_test     = input_data["m_test"]
     m_valid    = input_data["m_valid"]
-    # training parameters
     n_epochs   = input_data["n_epochs"]
     batch_size = input_data["batch_size"]
     lr         = input_data["lr"]
-    # DataLoader parameters
     shuffle    = input_data["shuffle"]
     num_workers= input_data["num_workers"]
-    # device
     device     = input_data["device"]
     device     = torch.device(device)
-    # scheduler parameters
     factor     = input_data["factor"]
     patience   = input_data["patience"]
     threshold  = input_data["threshold"]
-    # model to use
     model_name = input_data["model"]
-    # loss function to use
     loss       = input_data["loss"]
+    record_run = input_data["record_run"]
+
+    available_models = [
+            'Linear', 
+            'smallLinear', 
+            'linRes', 
+            'normLinear'
+            ]
+
+    assert model_name in available_models, f"The model {model_name} does not exist"
 
     # intialise tensorboard SummaryWriter for storing training
     # diagnostics
-    writer = SummaryWriter(comment=model_name)
+    if record_run:
+        writer = SummaryWriter(comment=model_name)
 
     # Instantiate object of dataset class for training data
     data_train   = dataset(path_data, 'train', m=m_train)
@@ -148,7 +148,8 @@ def Train(path_data: str, input_data: dict):
     lf = Loss(loss)
 
     # write model to tensorboard
-    writer.add_graph(model, torch.randn(1,50, device=device))
+    if record_run:
+        writer.add_graph(model, torch.randn(1,50, device=device))
 
     # Begin trining loop
     for e in range(n_epochs):
@@ -188,7 +189,8 @@ def Train(path_data: str, input_data: dict):
         # calculate loss average of epoch
         loss_training_avg = sum(losses_training)/len(losses_training)
         # add the average loss to tensor board
-        writer.add_scalar("t_loss/epoch", loss_training_avg, e)
+        if record_run:
+            writer.add_scalar("t_loss/epoch", loss_training_avg, e)
 
         # VALIDATION ---------------------------------------------------
         # Average value of validation loss per epoch
@@ -212,7 +214,8 @@ def Train(path_data: str, input_data: dict):
         # in this epoch
         loss_valid_avg = sum(losses_valid)/len(losses_valid)
         # add data point to tensorboard
-        writer.add_scalar("v_loss/epoch", loss_valid_avg, e)
+        if record_run:
+            writer.add_scalar("v_loss/epoch", loss_valid_avg, e)
 
         # ACCURACY -----------------------------------------------------
         # Test accuracy of network for each epoch, calculate the number
@@ -247,7 +250,8 @@ def Train(path_data: str, input_data: dict):
             # After passing all test data through the model add accuracy
             # to tensorboard
             # percentage_correct = counter_correct / len(data_test)
-            writer.add_scalar("accuracy", counter_correct, e)
+            if record_run:
+                writer.add_scalar("accuracy", counter_correct, e)
 
         # END OF EPOCH -------------------------------------------------
         scheduler.step(loss_training_avg)
@@ -263,8 +267,10 @@ def Train(path_data: str, input_data: dict):
     # finish tensorboard writing
     metric_dict = {"loss": loss_training_avg, 
                    "accuracy": counter_correct}
-    writer.add_hparams(input_data, metric_dict)
-    writer.flush()
+  
+    if record_run:
+        writer.add_hparams(input_data, metric_dict)
+        writer.flush()
 
 if __name__ == '__main__':
     import torch
