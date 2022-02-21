@@ -113,7 +113,7 @@ def Train(path_data: str, input_data: dict):
 
     # intialise tensorboard SummaryWriter for storing training
     # diagnostics
-    writer = SummaryWriter("runs/"+model_name)
+    writer = SummaryWriter(comment=model_name)
 
     # Instantiate object of dataset class for training data
     data_train   = dataset(path_data, 'train', m=m_train)

@@ -8,7 +8,7 @@ m_test  : null # number of examples for testing
 m_valid : null # number of examples for validation
 
 # Training hyperparameters
-n_epochs : 10 # int: number of epochs
+n_epochs : 100 # int: number of epochs
 lr       : 0.01 # float: initial learning rate
 device   : 'cuda:0' # str: which device to use 'cpu' or ''
 
@@ -22,7 +22,7 @@ num_workers : 4 # number of workers for DataLoader
 # detects that the training loss is not changing for some period of time
 # it will reduce the learning rate by some factor
 factor    : 0.5 # float: learning rate multiplier
-patience  : 4 # int: how many epochs to wait
+patience  : 5 # int: how many epochs to wait
 threshold : 0.001 # float: if loss hasn't changed by more than this val.
 
 # TODO this is not functional, make this functional
@@ -35,7 +35,7 @@ seed     : 0 # int: choose seed value
 
 # Model choice, options:
 # ['Linear', 'smallLinear', 'normLinear', 'linRes']
-model : 'Linear' # str: model to use for training
+model : 'linRes' # str: model to use for training
 
 # Loss function, options:
 # ['BCELoss']
