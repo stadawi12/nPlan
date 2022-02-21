@@ -47,6 +47,10 @@ def Model(name_model: str):
         from models import convNet
         return convNet.UNet()
 
+    elif name_model == 'linRes':
+        from models import linRes
+        return linRes.LinRes()
+
 def Loss(loss_name: str):
     """ Function designed to allow for choosing different loss functions
     during training. We need to ensure that a loss function is

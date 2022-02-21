@@ -47,9 +47,9 @@ class UNet(nn.Module):
         self.conv2   = conv(32, 64)
         self.conv3   = conv(64, 128)
 
-        self.up_conv1 = conv(128, 64)
-        self.up_conv2 = conv(64, 32)
-        self.up_conv3 = conv(32, 2)
+        self.up_conv1 = conv(64, 32)
+        self.up_conv2 = conv(16, 8)
+        self.up_conv3 = conv(8, 2)
 
         self.trans1  = nn.ConvTranspose2d(
                 in_channels  = 128,
@@ -59,8 +59,8 @@ class UNet(nn.Module):
                 )
 
         self.trans2  = nn.ConvTranspose2d(
-                in_channels  = 64,
-                out_channels = 32,
+                in_channels  = 32,
+                out_channels = 16,
                 kernel_size  = 2,
                 stride       = 2
                 )
@@ -70,32 +70,26 @@ class UNet(nn.Module):
     def forward(self, sample):
         # Linear upsampling
         x = self.linear1(sample)
-        # is x[0] the same as x[1]
         x = self.linear2(x)
         batch_size = x.shape[0]
 
-        # TODO check if reshape function does not mix examples
-        # Reshape linear layer to square matrix
         x = torch.reshape(x, (batch_size, 1, 32, 32))
         # for i in range(batch_size):
         #     print(torch.equal(x[i], torch.flatten(y[i])))
 
-        # Begin encoder applying a series of convolutions, activations
-        # and max pools
         x1 = self.conv1(x)  
         x = self.maxPool(x1)
         x2 = self.conv2(x)
         x = self.maxPool(x2)
         x = self.conv3(x)
+        print(torch.sum(x[0] - x[1]))
 
         # Begin decoder
         x = self.trans1(x)
-        x2 = crop(x2, x)
-        x = self.up_conv1(torch.cat([x, x2], 1))
+        x = self.up_conv1(x)
 
         x = self.trans2(x)
-        x1 = crop(x1, x)
-        x = self.up_conv2(torch.cat([x, x1], 1))
+        x = self.up_conv2(x)
         x = self.up_conv3(x)
         x = torch.reshape(x, (batch_size, x.shape[1]*x.shape[2]**2))
         x = self.out(x)
