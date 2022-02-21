@@ -27,7 +27,8 @@ class LinRes(nn.Module):
         self.linear1 = nn.Linear(50, 160)
         self.linear2 = nn.Linear(160, 160)
         self.linear3 = nn.Linear(160, 160)
-        self.linear4 = nn.Linear(160, 121)
+        self.linear4 = nn.Linear(160, 160)
+        self.linear5 = nn.Linear(160, 121)
         self.relu = nn.ReLU(inplace=True)
         self.sigm = nn.Sigmoid()
 
@@ -46,7 +47,12 @@ class LinRes(nn.Module):
         x = self.linear3(x)
         x = self.relu(x + identity)
 
+        identity = x
+
         x = self.linear4(x)
+        x = self.relu(x + identity)
+
+        x = self.linear5(x)
         x = self.sigm(x)
         return x
 
