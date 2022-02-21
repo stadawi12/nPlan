@@ -261,6 +261,9 @@ def Train(path_data: str, input_data: dict):
                 f"lr={get_lr(optimiser)}")
 
     # finish tensorboard writing
+    metric_dict = {"loss": loss_training_avg, 
+                   "accuracy": counter_correct}
+    writer.add_hparams(input_data, metric_dict)
     writer.flush()
 
 if __name__ == '__main__':
