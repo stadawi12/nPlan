@@ -247,6 +247,9 @@ def Train(path_data: str, input_data: dict):
 
         # END OF EPOCH -------------------------------------------------
         scheduler.step(loss_training_avg)
+        random_inpt, hello  = next(iter(loader_test))
+        random_out = model(random_inpt.to(device))
+        print(random_out)
 
         # At the end of each epoch print a statement to the console
         print(f"E: {e}, loss: {loss_training_avg:.5f}, Accuracy: " +

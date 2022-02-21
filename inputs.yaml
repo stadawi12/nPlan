@@ -35,7 +35,7 @@ seed     : 0 # int: choose seed value
 
 # Model choice, options:
 # ['Linear', 'smallLinear', 'normLinear', 'convNet']
-model : 'convNet' # str: model to use for training
+model : 'Linear' # str: model to use for training
 
 # Loss function, options:
 # ['BCELoss']

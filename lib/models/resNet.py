@@ -32,7 +32,9 @@ class Linear(nn.Module):
 
     def forward(self, sample):
         x = self.linear1(sample)
+        print(x.shape)
         x = self.linear2(x)
+        print(x.shape)
         x = self.linear3(x)
         x = self.linear4(x)
         return x
