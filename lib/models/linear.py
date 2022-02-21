@@ -25,9 +25,10 @@ class Linear(nn.Module):
         super(Linear, self).__init__()
 
         self.linear1 = linear(50, 160)
-        self.linear2 = linear(160, 320)
-        self.linear3 = linear(320, 160)
-        self.linear4 = close(160, 121)
+        self.linear2 = linear(160, 160)
+        self.linear3 = linear(160, 160)
+        self.linear4 = linear(160, 160)
+        self.linear5 = close(160, 121)
 
 
     def forward(self, sample):
@@ -35,6 +36,7 @@ class Linear(nn.Module):
         x = self.linear2(x)
         x = self.linear3(x)
         x = self.linear4(x)
+        x = self.linear5(x)
         return x
 
 
