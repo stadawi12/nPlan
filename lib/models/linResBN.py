@@ -17,12 +17,12 @@ def close(in_c, out_c):
             )
     return conv
 
-class LinRes(nn.Module):
+class LinResBN(nn.Module):
     """This is a linear neural network with linear layers, very simple,
     no skip connections just a standard model"""
 
     def __init__(self, norm=False):
-        super(LinRes, self).__init__()
+        super(LinResBN, self).__init__()
 
         self.norm = norm
 
@@ -34,15 +34,25 @@ class LinRes(nn.Module):
         self.relu = nn.ReLU(inplace=True)
         self.sigm = nn.Sigmoid()
 
+        self.bn1   = nn.BatchNorm1d(50)
+        self.bn2   = nn.BatchNorm1d(160)
+
+
     def forward(self, sample):
+
+        sample = self.bn1(sample)
 
         x = self.linear1(sample)
         x = self.relu(x)
+
+        x = self.bn2(x)
 
         identity = x
 
         x = self.linear2(x)
         x = self.relu(x + identity)
+
+        x = self.bn2(x)
 
         identity = x
 
@@ -62,7 +72,7 @@ class LinRes(nn.Module):
 if __name__ == "__main__":
     import torch
     n_features = 50
-    L = LinRes(norm=True)
+    L = LinResBN(norm=True)
     inpt = torch.randn(2,n_features)
     out = L(inpt)
     print("Input shape:", inpt.shape)

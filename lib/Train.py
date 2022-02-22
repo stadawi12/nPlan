@@ -31,7 +31,6 @@ def Train(path_data: str, input_data: dict):
     m_test     = input_data["m_test"]
     m_valid    = input_data["m_valid"]
     n_epochs   = input_data["n_epochs"]
-    batch_norm = input_data["batch_norm"]
     batch_size = input_data["batch_size"]
     lr         = input_data["lr"]
     shuffle    = input_data["shuffle"]
@@ -66,13 +65,13 @@ def Train(path_data: str, input_data: dict):
             shuffle=shuffle, pin_memory=True, num_workers=num_workers)
 
     # Instantiate object of dataset class for testing data
-    data_test   = dataset(path_data, 'test', m_test)
+    data_test   = dataset(path_data, 'test', m=m_test)
     # Initialise data loader 
     loader_test = DataLoader(data_test, batch_size=batch_size, 
             shuffle=shuffle, pin_memory=True, num_workers=num_workers)
 
     # Initialise model
-    model = LoadModel(model_name, batch_norm)
+    model = LoadModel(model_name)
     model.to(device)
     print(model)
 

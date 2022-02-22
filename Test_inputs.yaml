@@ -1,0 +1,10 @@
+# name of model to be tested
+name_model: 'Linear' 
+# use batch norm or not?
+batch_nomr: False
+# name of pretrained model found in models directory
+name_trained: 'Feb22_14-15-18_Linear_e100.pt'
+# name of file with features data
+name_features: 'test_feats.npy'
+# name of file with labels data
+name_labels: 'test_labels.npy'

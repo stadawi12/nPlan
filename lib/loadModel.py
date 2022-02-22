@@ -26,6 +26,7 @@ def LoadModel(model_name: str, batch_norm: bool = False):
             'Linear', 
             'smallLinear', 
             'linRes', 
+            'linResBN' 
             ]
 
     # assert that the model we have chosen is inside the list of 
@@ -42,7 +43,11 @@ def LoadModel(model_name: str, batch_norm: bool = False):
 
     elif model_name == 'linRes':
         from models import linRes
-        return linRes.LinRes(norm=batch_norm)
+        return linRes.LinRes()
+
+    elif model_name == 'linResBN':
+        from models import linRes
+        return linRes.LinRes()
 
 def LoadLoss(loss_name: str):
     """ Function designed to allow for choosing different loss functions

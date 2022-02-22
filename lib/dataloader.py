@@ -3,9 +3,6 @@ from torch.utils.data import Dataset
 import numpy as np
 import torch
 
-# TODO need to write tests for this module and find out if loading the
-# entire dataset when instantiating a dataset object leads to memory
-# issues
 
 class dataset(Dataset):
     """ Class that takes care of loading data,
