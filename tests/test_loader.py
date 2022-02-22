@@ -83,6 +83,8 @@ class TestLoader(unittest.TestCase):
         self.assertTrue(train_l.dtype == torch.Tensor(1).dtype)
 
     def test_loader_custom_example_amount(self):
+        # test to see if we can use custom amounts of data
+        # to train on, test on and validate on
 
         # First, load data using my loader module
         data_train_1k = dataset(self.PATH_DATA, 'train', m=1000)
