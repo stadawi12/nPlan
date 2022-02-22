@@ -33,21 +33,30 @@ class LinRes(nn.Module):
         self.linear5 = nn.Linear(160, 121)
         self.relu = nn.ReLU(inplace=True)
         self.sigm = nn.Sigmoid()
-        self.bn   = nn.BatchNorm1d(50)
+
+        if self.norm:
+            self.bn1   = nn.BatchNorm1d(50)
+            self.bn2   = nn.BatchNorm1d(160)
 
 
     def forward(self, sample):
 
         if self.norm:
-            sample = self.bn(sample)
+            sample = self.bn1(sample)
 
         x = self.linear1(sample)
         x = self.relu(x)
+
+        if self.norm:
+            x = self.bn2(x)
 
         identity = x
 
         x = self.linear2(x)
         x = self.relu(x + identity)
+
+        if self.norm:
+            x = self.bn2(x)
 
         identity = x
 

@@ -13,7 +13,7 @@ import math
 # sections of the Train function into their own functions as to avoid
 # creating spaghetting code
 
-def Model(name_model: str):
+def Model(name_model: str, batch_norm: bool):
     """Function desgined for choosing different built models for 
     training. Models can be found in 'models' directory. We need to make
     sure that the model is appropriate for our training data, the
@@ -24,6 +24,9 @@ def Model(name_model: str):
     ----------
     name_model : str
         name of model to use, choices so far: ['Linear', 'smallLinear']
+    batch_norm : bool
+        a boolean value which determines whether you want to use 
+        batch_norm or not
 
     Returns
     -------
@@ -45,7 +48,7 @@ def Model(name_model: str):
 
     elif name_model == 'linRes':
         from models import linRes
-        return linRes.LinRes()
+        return linRes.LinRes(norm=batch_norm)
 
 def Loss(loss_name: str):
     """ Function designed to allow for choosing different loss functions
@@ -88,6 +91,7 @@ def Train(path_data: str, input_data: dict):
     m_test     = input_data["m_test"]
     m_valid    = input_data["m_valid"]
     n_epochs   = input_data["n_epochs"]
+    batch_norm = input_data["batch_norm"]
     batch_size = input_data["batch_size"]
     lr         = input_data["lr"]
     shuffle    = input_data["shuffle"]
@@ -139,7 +143,7 @@ def Train(path_data: str, input_data: dict):
             shuffle=shuffle, pin_memory=True, num_workers=num_workers)
 
     # Initialise model
-    model = Model(model_name)
+    model = Model(model_name, batch_norm)
     model.to(device)
     print(model)
 
