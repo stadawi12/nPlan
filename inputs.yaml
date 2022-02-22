@@ -13,8 +13,6 @@ m_valid : null # number of examples for validation
 n_epochs   : 2 # int: number of epochs
 lr         : 0.01 # float: initial learning rate
 device     : 'cuda:0' # str: which device to use 'cpu' or ''
-# TODO batch_norm not applied to all models, only linRes
-batch_norm : True # Do you want to use batch norm in your model?
 
 # DataLoader options
 batch_size  : 1000 # int: batch size
@@ -37,14 +35,14 @@ use_seed : False # bool: option if we should use a seed or not
 seed     : 0 # int: choose seed value
 
 # Model choice, options:
-# ['Linear', 'smallLinear', 'normLinear', 'linRes']
-model : 'linRes' # str: model to use for training
+# ['Linear', 'smallLinear', 'linRes', 'linResBN']
+model : 'linResBN' # str: model to use for training
 
 # Loss function, options:
 # ['BCELoss']
 loss : 'BCELoss' # str: choose the loss function to use
 
 # saving parameters
-record_run : False # do you want to record run to tensorboard?
-save_model : False # bool do you want to save model
-dir_name   : 'models' # str specify directory where to save models 
+record_run : False # bool: do you want to record run to tensorboard?
+save_model : False # bool: do you want to save model
+dir_name   : 'models' # str: specify directory where to save models 

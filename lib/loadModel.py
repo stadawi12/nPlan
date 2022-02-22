@@ -46,8 +46,8 @@ def LoadModel(model_name: str, batch_norm: bool = False):
         return linRes.LinRes()
 
     elif model_name == 'linResBN':
-        from models import linRes
-        return linRes.LinRes()
+        from models import linResBN
+        return linResBN.LinResBN()
 
 def LoadLoss(loss_name: str):
     """ Function designed to allow for choosing different loss functions

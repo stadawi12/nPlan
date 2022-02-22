@@ -59,16 +59,16 @@ class TestModels(unittest.TestCase):
         self.assertTrue(out.max() < 1)
         self.assertTrue(out.min() > 0)
 
-    def test_output_shape_linRes_with_batchNorm(self):
-        model = LoadModel('linRes', batch_norm=True)
+    def test_output_shape_linResBN(self):
+        model = LoadModel('linResBN', batch_norm=True)
         # generate a random input sample
         inpt = torch.randn(2, 50)
         out  = model(inpt)
 
         self.assertEqual(out.shape, torch.Size([2, 121]))
 
-    def test_output_range_linRes_with_batchNorm(self):
-        model = LoadModel('linRes', batch_norm=True)
+    def test_output_range_linResBN(self):
+        model = LoadModel('linResBN', batch_norm=True)
         # generate a random input sample and ensure the output is
         # between the range 0 and 1
         inpt = torch.randn(100, 50)
