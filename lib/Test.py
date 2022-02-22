@@ -1,8 +1,7 @@
 from loadModel import LoadModel
 import torch
-from dataloader import dataset
-from Inputs import Read_Input
 import os
+import numpy as np
 
 
 def Test(path_data: str, path_models:str, input_data: dict):
@@ -28,7 +27,6 @@ def Test(path_data: str, path_models:str, input_data: dict):
     NAME_TRAINED:str  = input_data["name_trained"]
     NAME_FEATURES:str = input_data["name_features"]
     NAME_LABELS:str   = input_data["name_labels"]
-    BATCH_NORM:bool   = input_data["batch_norm"]
 
     # construct path to feature and label data
     path_features = os.path.join(path_data, NAME_FEATURES)
@@ -67,9 +65,18 @@ def Test(path_data: str, path_models:str, input_data: dict):
             # increment counter
             counter_correct += 1
 
-    print(counter_correct)
+    MSG_1 = "Number of correct predictions: "
+    MSG_2 = f"{counter_correct}/{len(data_features)}" 
+    print(MSG_1 + MSG_2)
 
 
 
 if __name__ == "__main__":
-    pass
+    from Inputs import Read_Input
+
+    path_data = '../data'
+    path_model = '../models'
+    path_inputs = '../Test_inputs.yaml'
+    input_data = Read_Input(path_inputs)
+
+    Test(path_data, path_model, input_data)

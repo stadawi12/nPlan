@@ -1,10 +1,10 @@
-# name of model to be tested
-name_model: 'Linear' 
-# use batch norm or not?
-batch_nomr: False
+# name of model to be tested, available model names:
+# NEED TO ENSURE name_model IS FOUND IN THE name_trained STRING
+# ['Linear', 'smallLinear', 'linRes', 'linResBN']
+name_model: 'smallLinear' 
 # name of pretrained model found in models directory
-name_trained: 'Feb22_14-15-18_Linear_e100.pt'
+name_trained: 'Feb22_14-18-04_smallLinear_e100.pt'
 # name of file with features data
-name_features: 'test_feats.npy'
+name_features: 'valid_feats.npy'
 # name of file with labels data
-name_labels: 'test_labels.npy'
+name_labels: 'valid_labels.npy'
