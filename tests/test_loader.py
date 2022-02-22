@@ -2,7 +2,7 @@
 import sys
 sys.path.insert(1, '../lib') # path where loader is found
 import unittest
-from loader import dataset
+from dataloader import dataset
 from torch.utils.data import DataLoader
 import numpy as np
 import torch

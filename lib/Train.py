@@ -1,4 +1,4 @@
-from loader import dataset
+from dataloader import dataset
 from torch.utils.data import DataLoader
 import torch.optim as optim
 import torch.nn as nn
@@ -6,10 +6,14 @@ from torch.utils.tensorboard import SummaryWriter
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 import torch
 import math
+from loadModel import LoadModel, LoadLoss
 
 # TODO need to write some tests for the Train function
 
 def get_lr(optimiser):
+    # function for obtaining learning rate during training, the 
+    # learning rate changes during training and we want to be able
+    # to see how it changes
     for param_group in optimiser.param_groups:
         return param_group['lr']
 
@@ -45,17 +49,6 @@ def Train(path_data: str, input_data: dict):
     save_model = input_data["save_model"]
     dir_name   = input_data["dir_name"]
 
-    # List of available models
-    available_models = [
-            'Linear', 
-            'smallLinear', 
-            'linRes', 
-            'normLinear'
-            ]
-
-    # assert that the model we have chosen is inside the list of 
-    # available models
-    assert model_name in available_models, f"The model {model_name} does not exist"
 
     # intialise tensorboard SummaryWriter for storing training
     # diagnostics
@@ -81,7 +74,7 @@ def Train(path_data: str, input_data: dict):
             shuffle=shuffle, pin_memory=True, num_workers=num_workers)
 
     # Initialise model
-    model = Model(model_name, batch_norm)
+    model = LoadModel(model_name, batch_norm)
     model.to(device)
     print(model)
 
@@ -91,7 +84,7 @@ def Train(path_data: str, input_data: dict):
             patience=patience, threshold=threshold)
 
     # Specify the loss function
-    lf = Loss(loss)
+    lf = LoadLoss(loss)
 
     # write model to tensorboard
     if record_run:

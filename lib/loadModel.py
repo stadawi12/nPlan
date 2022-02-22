@@ -1,5 +1,6 @@
+# - loadModel.py
 
-def LoadModel(name_model: str, batch_norm: bool):
+def LoadModel(model_name: str, batch_norm: bool = False):
     """Function desgined for choosing different built models for 
     training. Models can be found in 'models' directory. We need to make
     sure that the model is appropriate for our training data, the
@@ -8,7 +9,7 @@ def LoadModel(name_model: str, batch_norm: bool):
 
     Parameters
     ----------
-    name_model : str
+    model_name : str
         name of model to use, choices so far: ['Linear', 'smallLinear']
     batch_norm : bool
         a boolean value which determines whether you want to use 
@@ -20,19 +21,26 @@ def LoadModel(name_model: str, batch_norm: bool):
         the wanted model ready for training
     """
 
-    if name_model == 'Linear':
+    # List of available models
+    available_models = [
+            'Linear', 
+            'smallLinear', 
+            'linRes', 
+            ]
+
+    # assert that the model we have chosen is inside the list of 
+    # available models
+    assert model_name in available_models, f"The model {model_name} does not exist"
+
+    if model_name == 'Linear':
         from models import linear
         return linear.Linear()
 
-    elif name_model == 'smallLinear':
+    elif model_name == 'smallLinear':
         from models import smallLinear
         return smallLinear.SmallLinear()
 
-    elif name_model == 'normLinear':
-        from models import normLinear
-        return normLinear.NormLinear()
-
-    elif name_model == 'linRes':
+    elif model_name == 'linRes':
         from models import linRes
         return linRes.LinRes(norm=batch_norm)
 
@@ -51,7 +59,13 @@ def LoadLoss(loss_name: str):
     loss function : torch loss function
         the wanted loss function
     """
+    # List of available losses
+    available_losses =['BCELoss']
 
+    # assert that the loss we have chosen is inside the list of 
+    # available losses
+    assert loss_name in available_losses, f"The loss {loss_name} does not exist"
 
     if loss_name == 'BCELoss':
+        import torch.nn as nn
         return nn.BCELoss()
