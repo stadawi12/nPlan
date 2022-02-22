@@ -59,7 +59,9 @@ would tell `main.py` to train a model on the data provided in the
 `data` folder and to use parameters specified in the `inputs.yaml` 
 file. 
 
-### Inputs file
+### main.py file
+
+### inputs.py file
 Inside the `inputs.yaml` file you will find a lot 
 of parameters that you can tweak for training, you will find things
 like `n_epochs` which is the number of epochs you want your training
@@ -71,3 +73,7 @@ from one of the listed models specified in the comment above it.
 There is only one `loss` function implemented in this project but I 
 have allowed the project to be scalable and adding a different
 loss function would not be difficult.
+
+### train
+
+### test
