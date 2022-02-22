@@ -17,3 +17,6 @@ runs
 models/*
 !models/.gitkeep
 !models/README.md
+
+# ignore predictions folder
+predictions

@@ -49,9 +49,11 @@ def Test(path_data: str, path_models:str, input_data: dict):
     model.eval()
 
     # pass feature data through model
+    print(f"Passing features through a trained model {NAME_TRAINED}")
     out = model(data_features)
     out = torch.where(out>0.5, 1., 0.)
 
+    print(f"Checking model outputs with labels provided and counting number of correct predictions")
     # initialise counter of correct predictions at start of 
     # each epoch to 0
     counter_correct = 0
@@ -64,6 +66,24 @@ def Test(path_data: str, path_models:str, input_data: dict):
 
             # increment counter
             counter_correct += 1
+
+    # save predictions as a .npy file
+    # create path to predicted file
+    # if predictions directory does not exist, create it
+    path = 'predictions'
+    if not os.path.exists(path):
+        os.mkdir(path)
+
+    path = os.path.join(path, NAME_TRAINED[:-3])
+
+    # if predictions/trained_model directory does not exist, create it
+    if not os.path.exists(path):
+        os.mkdir(path)
+
+    # construct full path to predicted file
+    path = os.path.join(path, NAME_LABELS)
+    # save predictions
+    np.save(path, out.numpy())
 
     MSG_1 = "Number of correct predictions: "
     MSG_2 = f"{counter_correct}/{len(data_features)}" 
