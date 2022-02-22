@@ -15,6 +15,7 @@ if __name__ == '__main__':
     use_seed: bool   = input_data["use_seed"]
     seed: int        = input_data["seed"]
     record_run: bool = input_data["record_run"]
+    save_model: bool = input_data["save_model"]
 
     if args.action == 'train':
 
@@ -23,6 +24,9 @@ if __name__ == '__main__':
 
         if record_run == False:
             print("WARNING: run will NOT be recorded!")
+
+        if save_model == False:
+            print("WARNING: model will NOT be saved!")
 
         
         if use_seed:

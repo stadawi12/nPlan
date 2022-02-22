@@ -16,3 +16,4 @@ runs
 # ignore saved models from being tracked
 models/*
 !models/.gitkeep
+!models/README.md

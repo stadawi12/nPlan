@@ -287,21 +287,22 @@ def Train(path_data: str, input_data: dict):
 
     # Save model if save_model is set to true
     if save_model:
-        # import datetime module
+        # import datetime and os modules
         import datetime
+        import os
         # get todays date
         today = datetime.date.today()
         # transform into a readable format
         DATE  = today.isoformat()
 
         # construct the name of the model (tail)
-        TAIL = f"{DATE}_{model_name}_e{n_epochs}"
+        TAIL = f"{DATE}_{model_name}_e{n_epochs}.pt"
 
         # join directory name with name of model (tail)
-        PATH_FULL = os.path(dir_name, TAIL)
+        PATH_FULL = os.path.join(dir_name, TAIL)
 
         # save model
-        model.save(model.state_dict(), PATH_FULL)
+        torch.save(model.state_dict(), PATH_FULL)
 
 if __name__ == '__main__':
     import torch
