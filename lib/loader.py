@@ -13,7 +13,8 @@ class dataset(Dataset):
 
     Need to define __len__() function and the __getitem__() function."""
 
-    def __init__(self, path_data: str, data_for: str, m: int = None):
+    def __init__(self, path_data: str, data_for: str, m: int = None,
+            device='cpu'):
 
         """
         Parameters
@@ -26,6 +27,9 @@ class dataset(Dataset):
         m : int
             number of examples to load
         """
+
+        self.device = device
+        self.device = torch.device(self.device)
         
         # path to global data directory
         self.path_data: str = path_data
@@ -66,7 +70,7 @@ class dataset(Dataset):
     def __getitem__(self, i):
         tensor_feature = torch.from_numpy(self.data_feats[i]).float()
         tensor_label = torch.from_numpy(self.data_labels[i]).float()
-        return tensor_feature, tensor_label
+        return tensor_feature.to(self.device), tensor_label.to(self.device)
 
 
 if __name__ == '__main__':
@@ -76,7 +80,7 @@ if __name__ == '__main__':
     # Path to train_feats.npy file with node features data
     path = '../data'
     # Instantiate object of dataset class
-    tf = dataset(path, 'train', m=1000)
+    tf = dataset(path, 'train', m=1000, device='cuda:0')
     print(len(tf))
 
     # Initialise data loader with custom batch size and shuffle bool
@@ -89,10 +93,10 @@ if __name__ == '__main__':
         # Ensure shape is correct
         print(feats.shape)
         print(labels.shape)
-        print(feats.dtype)
+        print(feats.device)
         print(labels.dtype)
-        print(feats)
-        print(labels)
+        # print(feats)
+        # print(labels)
         # Ensure the data type is a Tensor
         print(type(feats))
         print(type(labels))

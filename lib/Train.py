@@ -100,7 +100,10 @@ def Train(path_data: str, input_data: dict):
     model_name = input_data["model"]
     loss       = input_data["loss"]
     record_run = input_data["record_run"]
+    save_model = input_data["save_model"]
+    path_save  = input_data["path_save"]
 
+    # List of available models
     available_models = [
             'Linear', 
             'smallLinear', 
@@ -108,6 +111,8 @@ def Train(path_data: str, input_data: dict):
             'normLinear'
             ]
 
+    # assert that the model we have chosen is inside the list of 
+    # available models
     assert model_name in available_models, f"The model {model_name} does not exist"
 
     # intialise tensorboard SummaryWriter for storing training
@@ -117,23 +122,22 @@ def Train(path_data: str, input_data: dict):
 
     # Instantiate object of dataset class for training data
     data_train   = dataset(path_data, 'train', m=m_train)
-    # Initialise data loader with custom batch size and shuffle bool
+    # Initialise data loader 
     loader_train = DataLoader(data_train, batch_size=batch_size, 
             shuffle=shuffle, pin_memory=True, num_workers=num_workers)
 
     # Instantiate object of dataset class for validatiaon data
     data_valid   = dataset(path_data, 'valid', m=m_valid)
-    # Initialise data loader with custom batch size and shuffle bool
+    # Initialise data loader 
     loader_valid = DataLoader(data_valid, batch_size=batch_size, 
             shuffle=shuffle, pin_memory=True, num_workers=num_workers)
 
     # Instantiate object of dataset class for testing data
     data_test   = dataset(path_data, 'test', m_test)
-    # Initialise data loader with custom batch size and shuffle bool
+    # Initialise data loader 
     loader_test = DataLoader(data_test, batch_size=batch_size, 
             shuffle=shuffle, pin_memory=True, num_workers=num_workers)
 
-    # TODO allow for option to choose device: 'cpu', 'cuda:0'
     # Initialise model
     model = Model(model_name)
     model.to(device)
@@ -155,12 +159,12 @@ def Train(path_data: str, input_data: dict):
     for e in range(n_epochs):
 
         # TRAINING -----------------------------------------------------
-        # Average value of training loss per epoch
+        # Bin for collecting values of training loss per epoch
         losses_training = []
 
         # initialise batch_number as 0
         batch_number = 0
-        # calculate number of batches
+        # obtain number of batches
         number_of_batches = math.ceil(len(data_train)/batch_size)
 
         # Minibatch loop
@@ -168,7 +172,8 @@ def Train(path_data: str, input_data: dict):
 
             # FORWARD PASS
             # pass training features data through model
-            #TODO .to device feels hacky
+            #TODO .to device feels hacky and passing data to device
+            # constantly most likely slows down performance
             out = model(feats.to(device))
             # calculate loss by comparing output with labels
             loss_training = lf(out, labels.to(device))
@@ -271,6 +276,12 @@ def Train(path_data: str, input_data: dict):
     if record_run:
         writer.add_hparams(input_data, metric_dict)
         writer.flush()
+
+    if save_model:
+        # construct path for saving model
+        dir_name = path_save
+        path_save = ''
+        model.save(model.state_dict(), path_save)
 
 if __name__ == '__main__':
     import torch
