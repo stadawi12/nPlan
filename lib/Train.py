@@ -8,8 +8,6 @@ import torch
 import math
 from loadModel import LoadModel, LoadLoss
 
-# TODO need to write some tests for the Train function
-
 def get_lr(optimiser):
     # function for obtaining learning rate during training, the 
     # learning rate changes during training and we want to be able
