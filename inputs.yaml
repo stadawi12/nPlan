@@ -10,7 +10,7 @@ m_test  : null # number of examples for testing
 m_valid : null # number of examples for validation
 
 # Training hyperparameters
-n_epochs : 1 # int: number of epochs
+n_epochs : 50 # int: number of epochs
 lr       : 0.01 # float: initial learning rate
 device   : 'cuda:0' # str: which device to use 'cpu' or ''
 
@@ -31,18 +31,18 @@ threshold : 0.001 # float: if loss hasn't changed by more than this val.
 # start the model each time, rather than letting the starting point be
 # random each time, this can be used for testing the effect of different
 # hyperparameters
-use_seed : True # bool: option if we should use a seed or not
+use_seed : False # bool: option if we should use a seed or not
 seed     : 0 # int: choose seed value
 
 # Model choice, options:
 # ['Linear', 'smallLinear', 'normLinear', 'linRes']
-model : 'Linear' # str: model to use for training
+model : 'linRes' # str: model to use for training
 
 # Loss function, options:
 # ['BCELoss']
 loss : 'BCELoss' # str: choose the loss function to use
 
 # Do you want to record run to tensorboard?
-record_run : False # bool
+record_run : True # bool
 save_model : False # bool do you want to save model
 path_save  : 'models' # str specify path where to save models 

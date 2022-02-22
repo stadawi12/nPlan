@@ -13,8 +13,7 @@ class dataset(Dataset):
 
     Need to define __len__() function and the __getitem__() function."""
 
-    def __init__(self, path_data: str, data_for: str, m: int = None,
-            device='cpu'):
+    def __init__(self, path_data: str, data_for: str, m: int = None):
 
         """
         Parameters
@@ -28,9 +27,6 @@ class dataset(Dataset):
             number of examples to load
         """
 
-        self.device = device
-        self.device = torch.device(self.device)
-        
         # path to global data directory
         self.path_data: str = path_data
         # name of dataset, 'train', 'test' or 'valid'
@@ -70,7 +66,7 @@ class dataset(Dataset):
     def __getitem__(self, i):
         tensor_feature = torch.from_numpy(self.data_feats[i]).float()
         tensor_label = torch.from_numpy(self.data_labels[i]).float()
-        return tensor_feature.to(self.device), tensor_label.to(self.device)
+        return tensor_feature, tensor_label
 
 
 if __name__ == '__main__':
