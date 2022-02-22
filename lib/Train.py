@@ -105,7 +105,7 @@ def Train(path_data: str, input_data: dict):
     loss       = input_data["loss"]
     record_run = input_data["record_run"]
     save_model = input_data["save_model"]
-    path_save  = input_data["path_save"]
+    dir_name   = input_data["dir_name"]
 
     # List of available models
     available_models = [
@@ -178,6 +178,9 @@ def Train(path_data: str, input_data: dict):
             # pass training features data through model
             #TODO .to device feels hacky and passing data to device
             # constantly most likely slows down performance
+            # Tried loading all data to GPU so there would be no
+            # need to transfer batches between GPU and CPU but that
+            # seemed even slower, no known solution for this yet.
             out = model(feats.to(device))
             # calculate loss by comparing output with labels
             loss_training = lf(out, labels.to(device))
@@ -277,15 +280,28 @@ def Train(path_data: str, input_data: dict):
     metric_dict = {"loss": loss_training_avg, 
                    "accuracy": counter_correct}
   
+    # Add params hyperparameters and close tensorboard writing
     if record_run:
         writer.add_hparams(input_data, metric_dict)
         writer.flush()
 
+    # Save model if save_model is set to true
     if save_model:
-        # construct path for saving model
-        dir_name = path_save
-        path_save = ''
-        model.save(model.state_dict(), path_save)
+        # import datetime module
+        import datetime
+        # get todays date
+        today = datetime.date.today()
+        # transform into a readable format
+        DATE  = today.isoformat()
+
+        # construct the name of the model (tail)
+        TAIL = f"{DATE}_{model_name}_e{n_epochs}"
+
+        # join directory name with name of model (tail)
+        PATH_FULL = os.path(dir_name, TAIL)
+
+        # save model
+        model.save(model.state_dict(), PATH_FULL)
 
 if __name__ == '__main__':
     import torch

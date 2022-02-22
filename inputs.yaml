@@ -47,4 +47,4 @@ loss : 'BCELoss' # str: choose the loss function to use
 # saving parameters
 record_run : True # do you want to record run to tensorboard?
 save_model : False # bool do you want to save model
-path_save  : 'models' # str specify path where to save models 
+dir_name   : 'models' # str specify directory where to save models 
