@@ -31,12 +31,12 @@ so that we have all the data files directly in the data directory
 
 4) Now create a fresh python environment (I have used Python version
 3.9.5 for my project) using 
-`python3.9 -m venv .venv` then go ahead and source the new environment
-using `source .venv/bin/activate`
+`$ python3.9 -m venv .venv` then go ahead and source the new environment
+using `$ source .venv/bin/activate`
 
 5) Once that is done, you will be ready to install the necessary python 
 packages to run my scripts, to do this, run
-`pip install -r requirements.txt`,
+`$ pip install -r requirements.txt`,
 this may take a while as I am using torch
 for my project which alone is ~1GB large, so make sure you have 
 enough storage on your machine.
@@ -49,19 +49,25 @@ If the tests have passed, the code most likely works as intended and
 should be functional on your machine from now onwards.
 
 ## How my scripts work
+
 My project has two main actions that can be performed, `train` and
 `test`. They can be instantiated by running the `main.py` file
-and specifying the `-a` flag which stands for action. To do this
+and specifying the `-a` flag which stands for action. For example,
+train a model 
 we would run the following command `$ python main.py -a train`, this
 would tell `main.py` to train a model on the data provided in the 
-`data` folder. Inside the `inputs.yaml` file you will find a lot 
+`data` folder and to use parameters specified in the `inputs.yaml` 
+file. 
+
+### Inputs file
+Inside the `inputs.yaml` file you will find a lot 
 of parameters that you can tweak for training, you will find things
 like `n_epochs` which is the number of epochs you want your training
 to run for or `lr` which is the initial learning rate for your
 training, etc.. There are many parameters that you can play with 
 to within reason, it is the control centre for training models. 
 Using the inputs file, you can choose the `model` you want to train
-using one of the listed models specified in the comment above it.
-There is only one loss function implemented in this project but I 
+from one of the listed models specified in the comment above it.
+There is only one `loss` function implemented in this project but I 
 have allowed the project to be scalable and adding a different
 loss function would not be difficult.
