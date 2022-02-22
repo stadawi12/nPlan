@@ -291,9 +291,9 @@ def Train(path_data: str, input_data: dict):
         import datetime
         import os
         # get todays date
-        today = datetime.date.today()
+        now = datetime.datetime.now()
         # transform into a readable format
-        DATE  = today.isoformat()
+        DATE  = now.strftime("%b%y_%H-%M-%S")
 
         # construct the name of the model (tail)
         TAIL = f"{DATE}_{model_name}_e{n_epochs}.pt"

@@ -1,2 +1,2 @@
-naming convention:
-yyyy-mm-dd_{name of model}_e{number of epochs}.pt
+Model naming convention
+`<MonthYear>_<Time>_<model name>_e<number of epochs>.pt`
