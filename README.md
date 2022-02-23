@@ -53,7 +53,7 @@ should be functional on your machine from now onwards.
 My project has two main actions that can be performed, `train` and
 `test`. They can be instantiated by running the `main.py` file
 and specifying the `-a` flag which stands for action. For example,
-train a model 
+to train a model 
 we would run the following command `$ python main.py -a train`, this
 would tell `main.py` to train a model on the data provided in the 
 `data` folder and to use parameters specified in the `inputs.yaml` 
@@ -81,11 +81,13 @@ you will see that there are five models to choose from
 ("linear", "smallLinear", "linRes", "linResBN", "resNet"). They are
 all unique models, adding more models is straightforward.
 You can go ahead and play with the different variables in the 
-`inputs.yaml` file. Upon a training session using 
-`$ python main.py -a train` `main.py` will read the `inputs.yaml`
+`inputs.yaml` file. When starting a training session using 
+`$ python main.py -a train`, `main.py` will read the `inputs.yaml`
 file and set the specified training parameters. 
 
-Recording training session: If we specify 
+### Recording a training session
+
+If we specify 
 `record_run : True` the training parameters and diagnostic data
 will be saved using tensorboard. Tensorboard is a tool for 
 visualising machine learning experiments, it can record how
@@ -93,8 +95,12 @@ the loss, validation loss or accuracy evolve during training.
 It records the model used for training (in the form of a graph).
 Tensorboard also records the hyperparameters used for the training
 session, so that you do not lose track of which training session
-yielded best results, it is a good tool for comparing different 
-machine learning experiments. By setting `record_run : False` 
+yielded best results, and many many more. Tensorboard 
+is a good tool for 
+comparing different 
+machine learning experiments. 
+
+By setting `record_run : False` 
 the run will not be 
 recorded to tensorboard, this is useful if you are debugging and 
 do not want to clutter your `runs` directory, which is a directory
@@ -113,6 +119,8 @@ tool for storing training data but it is something I wanted to
 try out in this project as I have not used it before, I found it
 to be quite useful for this project and have a feeling I will
 use it for future machine learning projects.
+
+### Saving a trained model
 
 Another option in the `inputs.yaml` file is 
 `save_model` you can set that to either `True` or `False` 
