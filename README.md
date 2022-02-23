@@ -61,19 +61,91 @@ file.
 
 ### main.py file
 
-### inputs.py file
-Inside the `inputs.yaml` file you will find a lot 
-of parameters that you can tweak for training, you will find things
-like `n_epochs` which is the number of epochs you want your training
-to run for or `lr` which is the initial learning rate for your
-training, etc.. There are many parameters that you can play with 
-to within reason, it is the control centre for training models. 
-Using the inputs file, you can choose the `model` you want to train
-from one of the listed models specified in the comment above it.
-There is only one `loss` function implemented in this project but I 
-have allowed the project to be scalable and adding a different
-loss function would not be difficult.
+This is the main file of the training project, you can run 
+`main.py` using python and you will need to specify a flag, either
+`-a train` or `-a test`.
 
-### train
+### train flag
 
-### test
+This action (`-a train`) will train one of the models I have built.
+I have built
+5 different but simple models to see which one would perform best and 
+to try 
+different approaches. To choose a model to train, you will have to 
+go into the `inputs.yaml` file, this file contains all the
+parameters for training. There, you can choose the number of 
+epochs to train for by changing the `n_epochs` variable, you can
+set an initial learning rate `lr` and many more. In the 
+`inputs.yaml` file you can also specify the model you want to train,
+you will see that there are five models to choose from
+("linear", "smallLinear", "linRes", "linResBN", "resNet"). They are
+all unique models, adding more models is straightforward.
+You can go ahead and play with the different variables in the 
+`inputs.yaml` file. Upon a training session using 
+`$ python main.py -a train` `main.py` will read the `inputs.yaml`
+file and set the specified training parameters. 
+
+Recording training session: If we specify 
+`record_run : True` the training parameters and diagnostic data
+will be saved using tensorboard. Tensorboard is a tool for 
+visualising machine learning experiments, it can record how
+the loss, validation loss or accuracy evolve during training.
+It records the model used for training (in the form of a graph).
+Tensorboard also records the hyperparameters used for the training
+session, so that you do not lose track of which training session
+yielded best results, it is a good tool for comparing different 
+machine learning experiments. By setting `record_run : False` 
+the run will not be 
+recorded to tensorboard, this is useful if you are debugging and 
+do not want to clutter your `runs` directory, which is a directory
+where all the runs are saved, and is a directory where tensorboard 
+will store the diagnostic data of a run. To view the runs using
+the tensorboard API, you will need to have tensorboard installed 
+on your system (...). 
+To view the runs, use
+`$ tensorboard --logdir=runs` from the same directory the `runs`
+folder is stored and click the second link which will take you
+to the url containing the runs and the diagnostic data of each
+training session you have recorded. 
+
+Tensorboard is not a perfect
+tool for storing training data but it is something I wanted to 
+try out in this project as I have not used it before, I found it
+to be quite useful for this project and have a feeling I will
+use it for future machine learning projects.
+
+Another option in the `inputs.yaml` file is 
+`save_model` you can set that to either `True` or `False` 
+depending on whether you would like to save the trained model. 
+Again,
+not saving a model on every training run is useful for not 
+cluttering you memory with badly trained models, once you 
+settle on a good choice of hyper-parameters, you can then set
+`save_model` to `True` and save your trained model. The 
+trained model will be saved to the `\models` directory, where a 
+naming convention is specified inside `\models`. 
+
+This should be enough to get started with training a model.
+You can have a play around with the hyper-parameters and once
+you have agreed on a set of training parameters, save and
+exit the `inputs.yaml` and run 
+`python main.py -a train`, this will start a training session.
+You will notice that you can also specify the `device` to use
+for your training, if you are fortunate enough to have an
+alright gpu
+on your machine, this will reduce the cost of training 
+significantly (compared to training on a `cpu`).
+
+### test flag
+
+This flag `-a test` is for testing a pre-trained model, so once
+we have ran `python main - train` with the parameter 
+`save_model : True` then we should have a 
+trained model in the `models` directory. To test the model on
+some data we need to specify, the model we want to test, the
+data we want to pass to the model and we need to provide labels
+for the data to see how many of our model's predictions are
+correct. We can specify all these in the `Test_inputs.yaml`
+file. This is a file that `main.py` reads when we run the
+`- test` flag. The parameters in `Test_inputs.yaml` file
+should be self explanatory. 
