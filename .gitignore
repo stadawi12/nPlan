@@ -6,6 +6,8 @@ data/*
 # But do track the data directory itself, only not its contents
 !data/.gitkeep
 !data/read_data.py
+!data/adjacency.py
+!data/edge_index.py
 
 # ignore the tensorboard directory
 runs
