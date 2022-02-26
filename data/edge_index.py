@@ -49,14 +49,22 @@ class Graphs():
         MSG4 = f"Path {self.path_json} does not exist"
         assert os.path.exists(self.path_json), MSG4
 
-        # create filename of the graph.json file
+        # create filename of the feats.npy file
         self.filename_feats = self.dataset + '_feats.npy'
 
-        # create path to graph.json file and assert it exists
+        # create path to feats.npy file and assert it exists
         self.path_feats = os.path.join(self.path_data,
                 self.filename_feats)
-        MSG4 = f"Path {self.path_feats} does not exist"
-        assert os.path.exists(self.path_feats), MSG4
+        MSG5 = f"Path {self.path_feats} does not exist"
+        assert os.path.exists(self.path_feats), MSG5
+
+        # create filename of the labels.npy file
+        self.filename_labels = self.dataset + '_labels.npy'
+        # create path to labels.npy file and assert it exists
+        self.path_labels = os.path.join(self.path_data,
+                self.filename_labels)
+        MSG6 = f"Path {self.path_labels} does not exist"
+        assert os.path.exists(self.path_labels), MSG6
 
     # this specifies the indexing of our object
     def __getitem__(self, i):
@@ -68,11 +76,14 @@ class Graphs():
         # series of [1,1,1,...,2,2,2,...,3,3,.....]
         graph_ids = np.load(self.path_ids)
 
-        # load features (num_nodes x 50)
-        features = np.load(self.path_feats)
+        MSG11 = f"graph_ids are not sorted"
+        assert list(graph_ids) == sorted(list(graph_ids)), MSG11
 
-        MSG5 = f"graph_ids are not sorted"
-        assert list(graph_ids) == sorted(list(graph_ids)), MSG5
+        # load features (num_nodes, 50)
+        features = torch.from_numpy(np.load(self.path_feats))
+
+        # load labels (num_nodes, 121)
+        labels = torch.from_numpy(np.load(self.path_labels))
 
         # calculate how many nodes in each graph using dictionary
         # counting, counts = {graph_id: count}
@@ -107,8 +118,6 @@ class Graphs():
             # that are above it
             shift = sum([counts[ID] for ID in ids_above])
 
-        x = features[shift : shift + counts[chosen_graph_id]]
-
         # generate an empty list for holding edge_indexes 
         edge_index = []
 
@@ -137,10 +146,11 @@ class Graphs():
 
             jsonFile.close()
 
-        x = torch.from_numpy(x)
         edge_index = torch.tensor(edge_index, dtype=torch.long)
 
-        return x, edge_index.t().contiguous()
+        return (features[shift : shift + counts[chosen_graph_id]], 
+                edge_index.t().contiguous(), 
+                labels[shift : shift + counts[chosen_graph_id]])
 
     def __len__(self):
         # return the number of graphs found in dataset
@@ -159,16 +169,11 @@ if __name__ == '__main__':
     except ImportError:
         random_walk = None
 
-    g = Graphs('.', 'train')
-    x, edge_index = g[0]
-    device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
-    model = Node2Vec(edge_index, embedding_dim=50, walk_length=20,
-            context_size=10, walks_per_node=20, 
-            num_negative_samples=1, p=1, q=1, sparse=True).to(device)
+    class Node2vec(Node2Vec):
 
-    loader = model.loader(batch_size=128, shuffle=False, num_workers=0)
-    print(len(loader))
-    optimiser = torch.optim.SparseAdam(list(model.parameters()), lr=0.01)
+        def test(self):
+            print("Hello! I am captain now")
+
 
     def train():
         model.train()
@@ -182,9 +187,33 @@ if __name__ == '__main__':
         return total_loss / len(loader)
 
 
+    g = Graphs('.', 'train')
+    x, edge_index, labels = g[0]
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    model = Node2Vec(edge_index, embedding_dim=50, walk_length=20,
+            context_size=10, walks_per_node=20, 
+            num_negative_samples=1, p=1, q=1, sparse=True).to(device)
+
+    loader = model.loader(batch_size=128, shuffle=False, num_workers=0)
+    optimiser = torch.optim.SparseAdam(list(model.parameters()), lr=0.01)
+
+
+    @torch.no_grad()
+    def test():
+        model.eval()
+        features = model()
+        acc = model.test(features[:-170], labels[:-170],
+                features[-170:], labels[-170:],
+                max_iter=150)
+        return acc
+
     for epoch in range(1,11):
         loss = train()
-        print(f"Epoch {epoch}, Loss: {loss:.4f}")
+        acc = test()
+        print(f"Epoch {epoch}, Loss: {loss:.4f}, Acc: {acc:.4f}")
+
+
+
     # for idx, (pos_rw, neg_rw) in enumerate(loader):
         # print(idx, pos_rw.shape, neg_rw.shape)
     # print(pos_rw[:,0])
