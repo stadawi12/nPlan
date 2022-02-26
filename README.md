@@ -136,24 +136,52 @@ naming convention is specified inside `\models`.
 This should be enough to get started with training a model.
 You can have a play around with the hyper-parameters and once
 you have agreed on a set of training parameters, save and
-exit the `inputs.yaml` and run 
+exit the `inputs.yaml` file and run 
 `python main.py -a train`, this will start a training session.
 You will notice that you can also specify the `device` to use
 for your training, if you are fortunate enough to have an
-alright gpu
+alright GPU
 on your machine, this will reduce the cost of training 
-significantly (compared to training on a `cpu`).
+significantly (compared to training on a `cpu`), simply set
+`device : 'cuda:0'` to use a GPU for training.
 
 ### test flag
 
-This flag `-a test` is for testing a pre-trained model, so once
-we have ran `python main - train` with the parameter 
+The `-a test` flag is for testing a pre-trained model, so once
+we have ran `python main -a train` with the parameter 
 `save_model : True` then we should have a 
 trained model in the `models` directory. To test the model on
-some data we need to specify, the model we want to test, the
+some data, we need to specify; the model we want to test, the
 data we want to pass to the model and we need to provide labels
 for the data to see how many of our model's predictions are
 correct. We can specify all these in the `Test_inputs.yaml`
 file. This is a file that `main.py` reads when we run the
-`- test` flag. The parameters in `Test_inputs.yaml` file
-should be self explanatory. 
+`-a test` flag. The parameters in `Test_inputs.yaml` file
+should be self explanatory. Once we have the right parameters
+set in our `Test_inputs.yaml` file, go ahead and save those
+parameters and exit the file, then run: 
+`python main.py -a test`, this will start testing the model 
+specified, against the data and labels provided. A score will
+be given (number of correct predictions / total number of 
+examples provided). The predictions will also be stored in 
+`\predictions\modelname\dataFileName.npy` 
+as a `.npy` file. 
+
+## Assumptions
+
+1) My first assumption is that I should train a neural network 
+on the features and labels provided in the assignment. I did
+this as I was not convinced that my task was to build a graph
+neural network, as upon researching about graph neural networks
+I realised that it might take me more than 2 weeks to implement
+a graph neural network on the data provided given that I have 
+never worked with graph data. For that reason, I have settled on
+training a machine learning model to predict the labels provided
+in the dataset given the features.
+
+2) I have assumed that the features data is well balanced and 
+I have not performed any preprocessing steps on the data.
+
+3) I have assumed that the features data is not locally
+dependent, i.e. that feature 4 and 5 in a single example 
+are independent of each other.

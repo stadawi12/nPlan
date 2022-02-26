@@ -4,31 +4,52 @@ import json
 
 if __name__ == '__main__':
 
-    # train_feats = np.load('train_feats.npy')
+    train_feats = np.load('train_feats.npy')
     train_labels = np.load('train_labels.npy')
-    train_graph_id = np.load('train_graph_id.npy')
+    # train_graph_id = np.load('train_graph_id.npy')
     # print(train_feats.shape)
-    # print(train_feats[1])
+    print(train_feats[0])
+    print(train_feats[1])
     # print(train_labels.shape)
     # print(set(train_graph_id))
-    print(train_labels[240])
+    # print(train_labels[240])
+
+    count = 0
+    for i, f in enumerate(train_labels):
+        if np.array_equal(f, train_labels[1000]):
+            count += 1
+    print(count)
+
+    # for i, f in enumerate(train_feats):
+    #     if np.array_equal(f, train_labels[0]):
+    #         print(f"{i}: Label True")
+
+    # plt.plot(train_feats[0])
+    # plt.plot(train_feats[1])
+    # plt.plot(train_feats[1000])
+    # plt.show()
+
+    # plt.plot(train_labels[0])
+    # plt.plot(train_labels[1])
+    # plt.plot(train_labels[3])
+    # plt.show()
 
     # test_feats = np.load('test_feats.npy')
     # test_labels = np.load('test_labels.npy')
-    test_graph_id = np.load('test_graph_id.npy')
+    # test_graph_id = np.load('test_graph_id.npy')
     # print(test_feats.shape)
     # print(test_labels.shape)
     # print(test_graph_id.shape)
 
     # valid_feats = np.load('valid_feats.npy')
     # valid_labels = np.load('valid_labels.npy')
-    valid_graph_id = np.load('valid_graph_id.npy')
+    # valid_graph_id = np.load('valid_graph_id.npy')
     # print(valid_feats.shape)
     # print(valid_labels.shape)
     # print(valid_graph_id.shape)
-    s = {x: 0 for x in set(train_graph_id)}
-    print(train_graph_id)
-    print(s)
+    # s = {x: 0 for x in set(train_graph_id)}
+    # print(train_graph_id)
+    # print(s)
 
 
     def plot_bars(dataset: str):
@@ -42,7 +63,7 @@ if __name__ == '__main__':
         plt.bar(ids, values)
         plt.show()
 
-    plot_bars('train')
+    # plot_bars('train')
     # plot_bars('test')
     # plot_bars('valid')
 
