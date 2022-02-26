@@ -151,7 +151,6 @@ class Graphs():
         return len(ids)
 
 if __name__ == '__main__':
-    from torch_geometric.data import Data
     from torch_geometric.nn import Node2Vec
     import torch
     try:
@@ -160,13 +159,39 @@ if __name__ == '__main__':
     except ImportError:
         random_walk = None
 
-    g = Graphs('.', 'test')
+    g = Graphs('.', 'train')
     x, edge_index = g[0]
-    print(x)
-    print(edge_index)
+    device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
     model = Node2Vec(edge_index, embedding_dim=50, walk_length=20,
-            context_size=10, walks_per_node=10, 
-            num_negative_samples=1, p=1, q=1, sparse=True)
+            context_size=10, walks_per_node=20, 
+            num_negative_samples=1, p=1, q=1, sparse=True).to(device)
+
+    loader = model.loader(batch_size=128, shuffle=False, num_workers=0)
+    print(len(loader))
+    optimiser = torch.optim.SparseAdam(list(model.parameters()), lr=0.01)
+
+    def train():
+        model.train()
+        total_loss = 0
+        for pos_rw, neg_rw in loader:
+            optimiser.zero_grad()
+            loss = model.loss(pos_rw.to(device), neg_rw.to(device))
+            loss.backward()
+            optimiser.step()
+            total_loss += loss.item()
+        return total_loss / len(loader)
+
+
+    for epoch in range(1,11):
+        loss = train()
+        print(f"Epoch {epoch}, Loss: {loss:.4f}")
+    # for idx, (pos_rw, neg_rw) in enumerate(loader):
+        # print(idx, pos_rw.shape, neg_rw.shape)
+    # print(pos_rw[:,0])
+    # print(neg_rw[0])
+    # print(pos_rw.shape)
+    # print(neg_rw.shape)
+    # print(b.shape 
 
     # features = np.load(g.path_feats)
     # len_features = len(features)

@@ -4,18 +4,18 @@ import json
 
 if __name__ == '__main__':
 
-    # train_feats = np.load('train_feats.npy')
-    # train_labels = np.load('train_labels.npy')
-    # train_graph_id = np.load('train_graph_id.npy')
-    # sorted_ids = list(train_graph_id)
-    # sorted_ids.sort()
-    # sorted_ids = np.array(sorted_ids)
-    # print(np.array_equal(train_graph_id, sorted_ids))
-    # print(train_feats.shape)
-    # print(train_feats[1])
-    # print(train_labels.shape)
-    # print(set(train_graph_id))
-    # print(train_labels[240])
+    train_feats = np.load('train_feats.npy')
+    train_labels = np.load('train_labels.npy')
+    train_graph_id = np.load('train_graph_id.npy')
+    sorted_ids = list(train_graph_id)
+    sorted_ids.sort()
+    sorted_ids = np.array(sorted_ids)
+    print(np.array_equal(train_graph_id, sorted_ids))
+    print(train_feats.shape)
+    print(train_feats[1])
+    print(train_labels.shape)
+    print(set(train_graph_id))
+    print(train_labels[240])
 
     # for i, label in enumerate(train_labels):
         # if np.array_equal(label, train_labels[0]):
