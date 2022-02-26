@@ -4,48 +4,18 @@ import json
 
 if __name__ == '__main__':
 
-    train_feats = np.load('train_feats.npy')
-    train_labels = np.load('train_labels.npy')
-<<<<<<< HEAD
+    # train_feats = np.load('train_feats.npy')
+    # train_labels = np.load('train_labels.npy')
     # train_graph_id = np.load('train_graph_id.npy')
+    # sorted_ids = list(train_graph_id)
+    # sorted_ids.sort()
+    # sorted_ids = np.array(sorted_ids)
+    # print(np.array_equal(train_graph_id, sorted_ids))
     # print(train_feats.shape)
-    print(train_feats[0])
-    print(train_feats[1])
+    # print(train_feats[1])
     # print(train_labels.shape)
     # print(set(train_graph_id))
     # print(train_labels[240])
-
-    count = 0
-    for i, f in enumerate(train_labels):
-        if np.array_equal(f, train_labels[1000]):
-            count += 1
-    print(count)
-
-    # for i, f in enumerate(train_feats):
-    #     if np.array_equal(f, train_labels[0]):
-    #         print(f"{i}: Label True")
-
-    # plt.plot(train_feats[0])
-    # plt.plot(train_feats[1])
-    # plt.plot(train_feats[1000])
-    # plt.show()
-
-    # plt.plot(train_labels[0])
-    # plt.plot(train_labels[1])
-    # plt.plot(train_labels[3])
-    # plt.show()
-=======
-    train_graph_id = np.load('train_graph_id.npy')
-    sorted_ids = list(train_graph_id)
-    sorted_ids.sort()
-    sorted_ids = np.array(sorted_ids)
-    print(np.array_equal(train_graph_id, sorted_ids))
-    print(train_feats.shape)
-    print(train_feats[1])
-    print(train_labels.shape)
-    print(set(train_graph_id))
-    print(train_labels[240])
->>>>>>> ab67f0ecf0c4ec9dd79c92dac99d95a85a20e8ff
 
     # for i, label in enumerate(train_labels):
         # if np.array_equal(label, train_labels[0]):
@@ -63,17 +33,14 @@ if __name__ == '__main__':
     # valid_graph_id = np.load('valid_graph_id.npy')
     # print(valid_feats.shape)
     # print(valid_labels.shape)
-<<<<<<< HEAD
     # print(valid_graph_id.shape)
     # s = {x: 0 for x in set(train_graph_id)}
     # print(train_graph_id)
-=======
     # print(set(valid_graph_id))
 
     # s = {x: 0 for x in set(train_graph_id)}
     # for el in train_graph_id:
         # s[el] += 1
->>>>>>> ab67f0ecf0c4ec9dd79c92dac99d95a85a20e8ff
     # print(s)
 
 
