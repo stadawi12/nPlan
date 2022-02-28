@@ -1,7 +1,7 @@
 # - inputs.yaml
 
 # Training hyperparameters
-n_epochs   : 200 # int: number of epochs
+n_epochs   : 100 # int: number of epochs
 lr         : 0.01 # float: initial learning rate
 device     : 'cuda' # str: which device to use 'cpu' or 'cuda:0'
 

@@ -15,7 +15,7 @@ def get_lr(optimiser):
     for param_group in optimiser.param_groups:
         return param_group['lr']
 
-def Train(path_data: str, input_data: dict):
+def Train(train_x, train_y, test_x, test_y, input_data):
     """This function takes care of training a model
 
     Parameters
@@ -27,14 +27,8 @@ def Train(path_data: str, input_data: dict):
 
     """
     # INPUTS
-    m_train    = input_data["m_train"]
-    m_test     = input_data["m_test"]
-    m_valid    = input_data["m_valid"]
     n_epochs   = input_data["n_epochs"]
-    batch_size = input_data["batch_size"]
     lr         = input_data["lr"]
-    shuffle    = input_data["shuffle"]
-    num_workers= input_data["num_workers"]
     device     = input_data["device"]
     device     = torch.device(device)
     factor     = input_data["factor"]
@@ -52,28 +46,9 @@ def Train(path_data: str, input_data: dict):
     if record_run:
         writer = SummaryWriter(comment=model_name)
 
-    # Instantiate object of dataset class for training data
-    data_train   = dataset(path_data, 'train', m=m_train)
-    # Initialise data loader 
-    loader_train = DataLoader(data_train, batch_size=batch_size, 
-            shuffle=shuffle, pin_memory=True, num_workers=num_workers)
-
-    # Instantiate object of dataset class for validatiaon data
-    data_valid   = dataset(path_data, 'valid', m=m_valid)
-    # Initialise data loader 
-    loader_valid = DataLoader(data_valid, batch_size=batch_size, 
-            shuffle=shuffle, pin_memory=True, num_workers=num_workers)
-
-    # Instantiate object of dataset class for testing data
-    data_test   = dataset(path_data, 'test', m=m_test)
-    # Initialise data loader 
-    loader_test = DataLoader(data_test, batch_size=batch_size, 
-            shuffle=shuffle, pin_memory=True, num_workers=num_workers)
-
     # Initialise model
     model = LoadModel(model_name)
     model.to(device)
-    print(model)
 
     # Specify optimiser
     optimiser = optim.Adam(model.parameters(), lr=lr)
@@ -91,71 +66,35 @@ def Train(path_data: str, input_data: dict):
     for e in range(n_epochs):
 
         # TRAINING -----------------------------------------------------
-        # Bin for collecting values of training loss per epoch
-        losses_training = []
 
-        # initialise batch_number as 0
-        batch_number = 0
-        # obtain number of batches
-        number_of_batches = math.ceil(len(data_train)/batch_size)
+        # FORWARD PASS
+        # pass training features data through model
+        out = model(train_x.to(device))
+        # calculate loss by comparing output with labels
+        loss_training = lf(out, train_y.to(device))
 
-        # Minibatch loop
-        for feats, labels in loader_train:
+        # BACKWARD PASS
+        model.zero_grad()
+        loss_training.backward()
+        optimiser.step()
 
-            # FORWARD PASS
-            # pass training features data through model
-            #TODO .to device feels hacky and passing data to device
-            # constantly most likely slows down performance
-            # Tried loading all data to GPU so there would be no
-            # need to transfer batches between GPU and CPU but that
-            # seemed even slower, no known solution for this yet.
-            out = model(feats.to(device))
-            # calculate loss by comparing output with labels
-            loss_training = lf(out, labels.to(device))
-
-            # append training loss for this batch to training_losses
-            losses_training.append(loss_training)
-
-            # BACKWARD PASS
-            model.zero_grad()
-            loss_training.backward()
-            optimiser.step()
-            batch_number += 1
-            # if model_name == 'convNet':
-            #     print(f"Batch: {batch_number}/{number_of_batches}")
-
-
-        # perform diagnostics after each training epoch
-        # calculate loss average of epoch
-        loss_training_avg = sum(losses_training)/len(losses_training)
         # add the average loss to tensor board
         if record_run:
-            writer.add_scalar("t_loss/epoch", loss_training_avg, e)
+            writer.add_scalar("t_loss/epoch", loss_training, e)
 
         # VALIDATION ---------------------------------------------------
-        # Average value of validation loss per epoch
-        losses_valid = []
 
         # Validation step for every epoch
         with torch.no_grad():
             
-            # pass validation dataset through network and calculate the
-            # loss
-            for valid_f, valid_l in loader_valid:
+            # pass batch of validation data through networ
+            out = model(test_x.to(device))
+            # calculate loss
+            loss_valid = lf(out, test_y.to(device))
 
-                # pass batch of validation data through networ
-                out = model(valid_f.to(device))
-                # calculate loss
-                loss_valid = lf(out, valid_l.to(device))
-                # append loss to losses bin
-                losses_valid.append(loss_valid)
-
-        # calculate average of validation loss for all validation data
-        # in this epoch
-        loss_valid_avg = sum(losses_valid)/len(losses_valid)
         # add data point to tensorboard
         if record_run:
-            writer.add_scalar("v_loss/epoch", loss_valid_avg, e)
+            writer.add_scalar("v_loss/epoch", loss_valid, e)
 
         # ACCURACY -----------------------------------------------------
         # Test accuracy of network for each epoch, calculate the number
@@ -166,47 +105,40 @@ def Train(path_data: str, input_data: dict):
             # each epoch to 0
             counter_correct = 0
 
-            # pass a batch of test data through the model
-            # test_f = test data features
-            # test_l = test data labels
-            for test_f, test_l in loader_test:
+            # pass test batch through the model
+            out = model(test_x.to(device))
 
-                # pass test batch through the model
-                out = model(test_f.to(device))
+            # binarise the output, (y_i>0.5)->1, (y_j<=0.5)->0
+            out = torch.where(out>0.5, 1., 0.)
 
-                # binarise the output, (y_i>0.5)->1, (y_j<=0.5)->0
-                out = torch.where(out>0.5, 1., 0.)
+            # check each sample of model output against test labels
+            for i in range(out.shape[0]):
 
-                # check each sample of model output against test labels
-                for i in range(out.shape[0]):
+                # check how many predictions are correct and
+                # increment counter for every correct prediction
+                if torch.equal(out[i], test_y[i].to(device)):
 
-                    # check how many predictions are correct and
-                    # increment counter for every correct prediction
-                    if torch.equal(out[i], test_l[i].to(device)):
+                    # increment counter
+                    counter_correct += 1
 
-                        # increment counter
-                        counter_correct += 1
-
+            acc = counter_correct / len(test_x) * 100
             # After passing all test data through the model add accuracy
             # to tensorboard
             # percentage_correct = counter_correct / len(data_test)
             if record_run:
-                writer.add_scalar("accuracy", counter_correct, e)
+                writer.add_scalar("accuracy", acc, e)
 
         # END OF EPOCH -------------------------------------------------
-        scheduler.step(loss_training_avg)
-        random_inpt, hello  = next(iter(loader_test))
-        random_out = model(random_inpt.to(device))
-        print(random_out)
+        scheduler.step(loss_training)
 
         # At the end of each epoch print a statement to the console
-        print(f"E: {e}, loss: {loss_training_avg:.5f}, Accuracy: " +
-                f"{counter_correct}/{len(data_test)}, " +
+        print(f"E: {e}, loss: {loss_training:.5f}, Accuracy: " +
+                f"{acc}, " +
                 f"lr={get_lr(optimiser)}")
 
     # finish tensorboard writing
-    metric_dict = {"loss": loss_training_avg, 
-                   "accuracy": counter_correct}
+    metric_dict = {"loss": loss_training, 
+                   "accuracy": acc}
   
     # Add params hyperparameters and close tensorboard writing
     if record_run:
@@ -241,6 +173,12 @@ if __name__ == '__main__':
 
     input_data = Read_Input(path_input)
 
-    torch.manual_seed(0)
+    features = torch.load('features.pt')
+    labels = torch.load('labels.pt')
 
-    Train(path_data, input_data)
+    train_x = features[:-170].float()
+    train_y = labels[:-170].float()
+    test_x = features[-170:].float()
+    test_y = labels[-170:].float()
+
+    Train(train_x, train_y, test_x, test_y, input_data)

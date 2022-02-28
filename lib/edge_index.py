@@ -187,74 +187,21 @@ if __name__ == '__main__':
         return total_loss / len(loader)
 
 
-    g = Graphs('.', 'train')
+    g = Graphs('../data', 'train')
     x, edge_index, labels = g[0]
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     model = Node2Vec(edge_index, embedding_dim=50, walk_length=20,
             context_size=10, walks_per_node=20, 
-            num_negative_samples=1, p=1, q=1, sparse=True).to(device)
+            num_negative_samples=2, p=1, q=1, sparse=True).to(device)
 
     loader = model.loader(batch_size=128, shuffle=False, num_workers=0)
     optimiser = torch.optim.SparseAdam(list(model.parameters()), lr=0.01)
 
 
-    @torch.no_grad()
-    def test():
-        model.eval()
-        features = model()
-        acc = model.test(features[:-170], labels[:-170],
-                features[-170:], labels[-170:],
-                max_iter=150)
-        return acc
-
-    for epoch in range(1,11):
+    for epoch in range(1,101):
         loss = train()
-        acc = test()
-        print(f"Epoch {epoch}, Loss: {loss:.4f}, Acc: {acc:.4f}")
+        print(f"Epoch {epoch}, Loss: {loss:.4f}")
 
-
-
-    # for idx, (pos_rw, neg_rw) in enumerate(loader):
-        # print(idx, pos_rw.shape, neg_rw.shape)
-    # print(pos_rw[:,0])
-    # print(neg_rw[0])
-    # print(pos_rw.shape)
-    # print(neg_rw.shape)
-    # print(b.shape 
-
-    # features = np.load(g.path_feats)
-    # len_features = len(features)
-
-    # # We want to check if the number total links is equal to the 
-    # # sum of all adjacency matrices that we construct
-    # # this will ensure that we at least do not miss a single link if the
-    # # two numbers are the same.
-    # with open(g.path_json) as jsonFile:
-        # jsonObject = json.load(jsonFile)
-
-        # # get all links
-        # links = jsonObject['links']
-        # # obtain the length of links, i.e. the number of all links for
-        # # all graphs in a dataset
-        # n_link_actual = len(links) 
-
-        # links_count = 0
-        # features_count = 0
-
-        # for i in range(len(g)):
-            # print(i)
-            # x, edge_index = g[i]
-            # links_count += len(edge_index)
-            # features_count += len(x)
-
-        # print(n_link_actual)
-        # print(links_count)
-        # if n_link_actual == links_count:
-            # print("We haven't missed any links")
-
-        # print(len_features)
-        # print(features_count)
-        # if len_features == features_count:
-            # print("We haven't missed any features")
-
-        # jsonFile.close()
+    z = model()
+    torch.save(z.detach().cpu(), 'features.pt')
+    torch.save(labels, 'labels.pt')
