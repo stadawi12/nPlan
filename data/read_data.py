@@ -4,14 +4,14 @@ import json
 
 if __name__ == '__main__':
 
-    # train_feats = np.load('train_feats.npy')
+    train_feats = np.load('train_feats.npy')
     # train_labels = np.load('train_labels.npy')
     # train_graph_id = np.load('train_graph_id.npy')
     # sorted_ids = list(train_graph_id)
     # sorted_ids.sort()
     # sorted_ids = np.array(sorted_ids)
     # print(np.array_equal(train_graph_id, sorted_ids))
-    # print(train_feats.shape)
+    print(train_feats.shape)
     # print(train_feats[1])
     # print(train_labels.shape)
     # print(set(train_graph_id))
@@ -21,10 +21,10 @@ if __name__ == '__main__':
         # if np.array_equal(label, train_labels[0]):
             # print(i)
 
-    # test_feats = np.load('test_feats.npy')
+    test_feats = np.load('test_feats.npy')
     # test_labels = np.load('test_labels.npy')
     # test_graph_id = np.load('test_graph_id.npy')
-    # print(test_feats.shape)
+    print(test_feats.shape)
     # print(test_labels.shape)
     # print(set(test_graph_id))
 
