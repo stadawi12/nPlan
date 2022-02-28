@@ -62,6 +62,10 @@ if __name__ == '__main__':
     with open("train_graph.json") as jsonFile:
         jsonObject = json.load(jsonFile)
         links = jsonObject['links']
+        for link in links:
+            source = link['source']
+            if source == 0:
+                print(link)
         # print(jsonObject.keys())
         # print("Is the graph directed: ", jsonObject['directed'])
         # print("Is it a multigraph: ", jsonObject['multigraph'])
