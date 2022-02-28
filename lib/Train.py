@@ -1,4 +1,3 @@
-from dataloader import dataset
 from torch.utils.data import DataLoader
 import torch.optim as optim
 import torch.nn as nn
@@ -131,10 +130,10 @@ def Train(train_x, train_y, test_x, test_y, input_data):
         # END OF EPOCH -------------------------------------------------
         scheduler.step(loss_training)
 
-        # At the end of each epoch print a statement to the console
-        print(f"E: {e}, loss: {loss_training:.5f}, Accuracy: " +
-                f"{acc}, " +
-                f"lr={get_lr(optimiser)}")
+    # At the end of training epoch print a statement to the console
+    print(f"E: {e}, loss: {loss_training:.5f}, Accuracy: " +
+            f"{acc:.5f}, " +
+            f"lr={get_lr(optimiser)}")
 
     # finish tensorboard writing
     metric_dict = {"loss": loss_training, 
@@ -167,18 +166,23 @@ def Train(train_x, train_y, test_x, test_y, input_data):
 if __name__ == '__main__':
     import torch
     from Inputs import Read_Input
+    from graph import Graphs
 
     path_input = '../inputs.yaml'
     path_data = '../data'
 
     input_data = Read_Input(path_input)
 
-    features = torch.load('features.pt')
-    labels = torch.load('labels.pt')
+    data = Graphs(path_data, 'train')
 
-    train_x = features[:-170].float()
-    train_y = labels[:-170].float()
-    test_x = features[-170:].float()
-    test_y = labels[-170:].float()
+    for i in range(len(data)):
 
-    Train(train_x, train_y, test_x, test_y, input_data)
+        features = data.get_features(i)
+        labels = data.get_labels(i)
+
+        train_x = features[:-170].float()
+        train_y = labels[:-170].float()
+        test_x = features[-170:].float()
+        test_y = labels[-170:].float()
+
+        Train(train_x, train_y, test_x, test_y, input_data)

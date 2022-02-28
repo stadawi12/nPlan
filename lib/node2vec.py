@@ -1,5 +1,6 @@
 from torch_geometric.nn import Node2Vec
 import torch
+import json
 try:
     import torch_cluster  # noqa
     random_walk = torch.ops.torch_cluster.random_walk
@@ -45,7 +46,15 @@ def node2vec(path_data: str, input_data: dict):
 
     for idx in range(num_graphs):
 
-        x, edge_index, labels = g[idx]
+        edge_index = g.get_edges(idx)
+        print(edge_index.shape)
+
+        with open('../data/valid_graph.json') as f:
+            graph = json.load(f)
+            links = graph['links']
+            n_links = len(links)
+
+        print(f"{edge_index.shape[1]}/{n_links}")
 
         device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
@@ -56,6 +65,7 @@ def node2vec(path_data: str, input_data: dict):
                 num_negative_samples=NNS, 
                 p=P, q=Q, 
                 sparse=True).to(device)
+        print(model.adj)
 
         loader = model.loader(batch_size=BS, shuffle=False, 
                 num_workers=0)
@@ -71,6 +81,7 @@ def node2vec(path_data: str, input_data: dict):
         if SF:
 
             z = model()
+            print(z.shape)
 
             path_to_dir = os.path.join(path_data, 'features', D)
 
@@ -84,6 +95,8 @@ def node2vec(path_data: str, input_data: dict):
             torch.save(z.detach().cpu(), path_full)
             
             print(f"Successfully saved features to {path_full}")
+
+        model.adj = None
 
 if __name__ == '__main__':
     from Inputs import Read_Input

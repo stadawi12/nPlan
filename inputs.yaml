@@ -13,7 +13,7 @@ p : 1
 q : 1
 batch_size : 128 # how many nodes to consider per batch
 lrN2V : 0.01 # learning rate for node2vec
-dataset : 'valid' # which dataset to learn? 'train', 'test' or 'valid'
+dataset : 'test' # which dataset to learn? 'train', 'test' or 'valid'
 save_features : True # do you want to save the features
 
 

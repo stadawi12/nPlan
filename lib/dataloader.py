@@ -4,13 +4,13 @@ import numpy as np
 import torch
 
 
-class dataset(Dataset):
+class SingleGraphData(Dataset):
     """ Class that takes care of loading data,
     we want to be able to load train, test or validation data.
 
     Need to define __len__() function and the __getitem__() function."""
 
-    def __init__(self, path_data: str, data_for: str, m: int = None):
+    def __init__(self, path_data: str, dataset: str, graph_id: int):
 
         """
         Parameters
@@ -27,11 +27,16 @@ class dataset(Dataset):
         # path to global data directory
         self.path_data: str = path_data
         # name of dataset, 'train', 'test' or 'valid'
-        self.data_for: str  = data_for
+        self.dataset: str  = dataset
+        # set graph id 
+        self.graph_id = graph_id
 
         # generate full paths to data
-        path_feats: str  = os.path.join(self.path_data, 
-                self.data_for+'_feats.npy')
+        path_feats: str  = os.path.join(self.path_data, 'features',
+                self.dataset, 
+                'id_' + str(self.graph_id) + '.pt'
+                )
+
         path_labels: str = os.path.join(self.path_data, 
                 self.data_for+'_labels.npy')
 

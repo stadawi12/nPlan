@@ -28,10 +28,10 @@ if __name__ == '__main__':
     # print(test_labels.shape)
     # print(set(test_graph_id))
 
-    # valid_feats = np.load('valid_feats.npy')
+    valid_feats = np.load('valid_feats.npy')
     # valid_labels = np.load('valid_labels.npy')
     # valid_graph_id = np.load('valid_graph_id.npy')
-    # print(valid_feats.shape)
+    print(valid_feats.shape)
     # print(valid_labels.shape)
     # print(valid_graph_id.shape)
     # s = {x: 0 for x in set(train_graph_id)}
@@ -70,9 +70,9 @@ if __name__ == '__main__':
         # print("Example of a node: ", jsonObject['nodes'][0])
         # print("Length of links: ", len(jsonObject['links']))
         # print("Example of a link: ", jsonObject['links'][0:10])
-        for link in links:
-            if link['source'] == 1101:
-                print(link)
+        # for link in links:
+        #     if link['source'] == 1101:
+        #         print(link)
         # print("Node 0 is linked to node: ", jsonObject['nodes'][1767])
         # size = len(jsonObject["nodes"])
         # # Adjacency matrix
