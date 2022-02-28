@@ -160,5 +160,7 @@ class Graphs():
 
         return len(ids)
 
+
 if __name__ == '__main__':
-    pass
+    g = Graphs('../data', 'test')
+    print(g[1])

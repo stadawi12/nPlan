@@ -7,7 +7,6 @@ testall:
 	python test_data.py
 	python test_loader.py
 	python test_models.py
-	python test_Train.py
 	rm runs/* -r
 	rm models/*.pt
 
