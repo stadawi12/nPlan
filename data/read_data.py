@@ -61,25 +61,29 @@ if __name__ == '__main__':
 
     with open("train_graph.json") as jsonFile:
         jsonObject = json.load(jsonFile)
-        print(jsonObject.keys())
-        print("Is the graph directed: ", jsonObject['directed'])
-        print("Is it a multigraph: ", jsonObject['multigraph'])
-        print("graph: ", jsonObject['graph'])
-        print("length of nodes: ", len(jsonObject['nodes']))
-        print("Example of a node: ", jsonObject['nodes'][0])
-        print("Length of links: ", len(jsonObject['links']))
-        print("Example of a link: ", jsonObject['links'][1769])
-        print("Node 0 is linked to node: ", jsonObject['nodes'][1767])
-        size = len(jsonObject["nodes"])
-        # Adjacency matrix
-        A = np.zeros((size, size))
-        # Fill in adjacency matrix
-        for link in jsonObject["links"]:
-            row = link["source"]
-            col = link["target"]
-            A[row,col] = 1
-        block = 1000
-        print(np.sum(A[0:block,0:block].T - A[0:block,0:block]))
+        links = jsonObject['links']
+        # print(jsonObject.keys())
+        # print("Is the graph directed: ", jsonObject['directed'])
+        # print("Is it a multigraph: ", jsonObject['multigraph'])
+        # print("graph: ", jsonObject['graph'])
+        # print("length of nodes: ", len(jsonObject['nodes']))
+        # print("Example of a node: ", jsonObject['nodes'][0])
+        # print("Length of links: ", len(jsonObject['links']))
+        # print("Example of a link: ", jsonObject['links'][0:10])
+        for link in links:
+            if link['source'] == 1101:
+                print(link)
+        # print("Node 0 is linked to node: ", jsonObject['nodes'][1767])
+        # size = len(jsonObject["nodes"])
+        # # Adjacency matrix
+        # A = np.zeros((size, size))
+        # # Fill in adjacency matrix
+        # for link in jsonObject["links"]:
+        #     row = link["source"]
+        #     col = link["target"]
+        #     A[row,col] = 1
+        # block = 1000
+        # print(np.sum(A[0:block,0:block].T - A[0:block,0:block]))
 
         jsonFile.close()
 

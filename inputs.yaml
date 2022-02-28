@@ -1,23 +1,9 @@
 # - inputs.yaml
 
-# TODO the data might not be balanced in which case we 
-# cannot just choose the first 1000 examples, perhaps we should 
-# take extra care here and balance the data first and load 
-# only a portion of each class.
-# Number of examples, set to null if want to load all
-m_train : null # number of examples for training
-m_test  : null # number of examples for testing
-m_valid : null # number of examples for validation
-
 # Training hyperparameters
-n_epochs   : 100 # int: number of epochs
+n_epochs   : 200 # int: number of epochs
 lr         : 0.01 # float: initial learning rate
-device     : 'cuda:0' # str: which device to use 'cpu' or 'cuda:0'
-
-# DataLoader options
-batch_size  : 1000 # int: batch size
-shuffle     : True # Do you want to shuffle the data after each epoch?
-num_workers : 4 # number of workers for DataLoader
+device     : 'cuda' # str: which device to use 'cpu' or 'cuda:0'
 
 # Scheduler options 
 # The scheduler controls the learning rate during training, if it
@@ -36,13 +22,13 @@ seed     : 0 # int: choose seed value
 
 # Model choice, options:
 # ['Linear', 'smallLinear', 'linRes', 'linResBN']
-model : 'linResBN' # str: model to use for training
+model : 'linRes' # str: model to use for training
 
 # Loss function, options:
 # ['BCELoss']
 loss : 'BCELoss' # str: choose the loss function to use
 
 # saving parameters
-record_run : True # bool: do you want to record run to tensorboard?
-save_model : True # bool: do you want to save model
+record_run : False # bool: do you want to record run to tensorboard?
+save_model : False # bool: do you want to save model
 dir_name   : 'models' # str: specify directory where to save models 
