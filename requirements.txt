@@ -25,7 +25,6 @@ packaging==21.3
 pandas==1.4.1
 parso==0.8.3
 Pillow==9.0.1
-pkg_resources==0.0.0
 protobuf==3.19.4
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
@@ -49,9 +48,8 @@ torch-cluster==1.5.9
 torch-geometric==2.0.3
 torch-scatter==2.0.9
 torch-sparse==0.6.12
-torchvision==0.11.3
 tqdm==4.62.3
-typing_extensions==4.1.1
+typing-extensions==4.1.1
 urllib3==1.26.8
 Werkzeug==2.0.3
 yacs==0.1.8
