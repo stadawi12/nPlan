@@ -104,6 +104,9 @@ There you should follow steps 1, 2, 3, and in step 4 only install
 Once you have installed all the necessary torch packages, run
 `$ pip install -r requirements.txt`. You should now have all
 the requirements installed.
+TIP: if you have torch version 1.10.2+cu102 like me then set
+`$ TORCH=1.10.0` in your console and `$ CUDA=cu102` and then
+just copy and paste the instructions in the installation guide.
 
 5) Once all the requirements are installed, go to the `tests` directory
 using `$ cd tests` and run the `Makefile` by writing
