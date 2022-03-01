@@ -5,20 +5,20 @@
 datasetN2V: 'test' # which dataset to learn? 'train', 'test' or 'valid'
 
 # training hyperparameters
-n_epochsN2V : 100 # number of epochs for node2vec
-num_graphs : null # how many graphs to learn? set to null if all
-batch_size : 128 # how many nodes to consider per batch
-lrN2V : 0.01 # learning rate for node2vec
+n_epochsN2V: 100 # number of epochs for node2vec
+graph_idN2V: 0 # choose graph id to learn? set to null if all
+batch_size: 128 # how many nodes to consider per batch
+lrN2V: 0.01 # learning rate for node2vec
 
 # parameters for random walk
-walk_length : 20 # random walk length
-context_size : 10 # from each walk, take samples of size context_size
-walks_per_node : 20 # how many walks per node
-num_negative_samples : 2 # num of negative samples per positive sample
-p : 1
-q : 1
+walk_length: 20 # random walk length
+context_size: 10 # from each walk, take samples of size context_size
+walks_per_node: 20 # how many walks per node
+num_negative_samples: 2 # num of negative samples per positive sample
+p: 1
+q: 1
 
-save_features : True # do you want to save the features
+save_features: True # do you want to save the features
 
 
 # CLASSIFIER INPUTS ----------------------------------------------------

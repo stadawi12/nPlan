@@ -49,18 +49,20 @@ def node2vec(path_data: str, input_data: dict):
     BS  = input_data['batch_size']
     LR  = input_data['lrN2V']
     NE  = input_data['n_epochsN2V']
-    NG  = input_data['num_graphs']
+    GI  = input_data['graph_idN2V']
     D   = input_data['datasetN2V']
     SF  = input_data['save_features']
 
     g = Graphs(path_data, D)
 
-    if NG != None:
-        num_graphs = NG
+    # if graph id is specified, only learn that graph
+    if GI != None:
+        graphs = [GI]
+    # if graph id not specified learn all graph in dataset
     else:
-        num_graphs = len(g)
+        graphs = range(len(g))
 
-    for idx in range(num_graphs):
+    for idx in graphs:
 
         edge_index = g.get_edges(idx)
 
