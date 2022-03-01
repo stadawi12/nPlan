@@ -5,14 +5,16 @@ sys.path.insert(1, 'lib/models')
 import argparse
 from lib.Train import Train
 from lib.Inputs import Read_Input, Create_Parser
+from lib.graph import Graphs
 import torch
 
 if __name__ == '__main__':
 
     args = Create_Parser()
 
-
-    if args.action == 'train':
+    if args.action == 'classify':
+        
+        import math
 
         # load inputs file for training
         input_data = Read_Input('inputs.yaml')
@@ -22,9 +24,11 @@ if __name__ == '__main__':
         seed: int        = input_data["seed"]
         record_run: bool = input_data["record_run"]
         save_model: bool = input_data["save_model"]
+        dataset: str     = input_data["dataset"]
+        graph_id: int    = input_data["graph_id"]
+        test_split: float = input_data["test_split"]
 
         path_data = 'data'
-        input_data = Read_Input('inputs.yaml')
 
         if record_run == False:
             print("WARNING: run will NOT be recorded!")
@@ -37,9 +41,41 @@ if __name__ == '__main__':
             torch.manual_seed(seed)
             print("Using seed: ", seed)
 
-        Train(path_data, input_data)
+        data = Graphs('data', dataset)
 
-    if args.action == 'test':
+        if graph_id != None:
+
+            features = data.get_features(graph_id)
+            labels = data.get_labels(graph_id)
+
+            n_examples = len(features)
+            n_test = math.ceil(test_split * n_examples)
+
+            train_x = features[:-n_test].float()
+            train_y = labels[:-n_test].float()
+            test_x = features[-n_test:].float()
+            test_y = labels[-n_test:].float()
+
+            Train(train_x, train_y, test_x, test_y, input_data)
+
+        else:
+
+            for i in range(len(data)):
+
+                features = data.get_features(i)
+                labels = data.get_labels(i)
+
+                n_examples = len(features)
+                n_test = math.ceil(test_split * n_examples)
+
+                train_x = features[:-n_test].float()
+                train_y = labels[:-n_test].float()
+                test_x = features[-n_test:].float()
+                test_y = labels[-n_test:].float()
+
+                Train(train_x, train_y, test_x, test_y, input_data)
+
+    if args.action == 'embed':
         # import Test module
         from lib.Test import Test
         

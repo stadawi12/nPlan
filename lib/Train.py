@@ -177,12 +177,5 @@ if __name__ == '__main__':
 
     for i in range(len(data)):
 
-        features = data.get_features(i)
-        labels = data.get_labels(i)
-
-        train_x = features[:-170].float()
-        train_y = labels[:-170].float()
-        test_x = features[-170:].float()
-        test_y = labels[-170:].float()
 
         Train(train_x, train_y, test_x, test_y, input_data)
