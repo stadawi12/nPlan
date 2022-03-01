@@ -9,27 +9,22 @@ To get the code running follow these steps:
 1) download my repository from github into an empty directory.
 Using `$ git clone`.
 
-2) As I do not track the data files themselves, you will need to 
-download them into an already existing directory named `data`.
-
-3) After downloading the zipped data file, run
-`$ unzip ppi_with_text.zip` followed by
-`$ mv ppi/* .`
-so that we have all the data files directly in the data directory
-
-4) Now create a fresh python environment (I have used Python version
-3.9.5 for my project) using 
+2) Create a fresh python environment (I have used Python version
+3.9.5 for my project, would recommend using same python version) using 
 `$ python3.9 -m venv .venv` then go ahead and source the new environment
 using `$ source .venv/bin/activate`
 
-5) Once that is done, you will be ready to install the necessary python 
+3) Once that is done, you will be ready to install the necessary python 
 packages to run my scripts, to do this, run
 `$ pip install -r requirements.txt`,
 this may take a while as I am using torch
 for my project which alone is ~1GB large, so make sure you have 
 enough storage on your machine.
 
-6) Once all the requirements are installed, go to the `tests` directory
+4) you will get some errors during the installation, this is because
+I am using `torch_geometric` which cannot be downloaded using pip.
+
+4) Once all the requirements are installed, go to the `tests` directory
 using `$ cd tests` and run the `Makefile` by using 
 `$ make`, this will run all the
 unittests I have created making sure that the code works as intended.
