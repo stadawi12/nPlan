@@ -1,15 +1,5 @@
-all: 
-	$(MAKE) testall || $(MAKE) clean
-
 testall:
-	rm runs/* -rf
-	rm models/*.pt -f
 	python test_data.py
-	python test_loader.py
 	python test_models.py
-	rm runs/* -r
-	rm models/*.pt
+	python test_graph.py
 
-clean:
-	rm runs/* -r
-	rm models/*.pt
