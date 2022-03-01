@@ -8,6 +8,9 @@ except ImportError:
     random_walk = None
 
 def train(model, loader, optimiser):
+    """This function is a single loop of node2vec training, 
+    we wrap over this function to learn for more epochs."""
+
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     model.train()
     total_loss = 0
@@ -21,6 +24,19 @@ def train(model, loader, optimiser):
 
 
 def node2vec(path_data: str, input_data: dict):
+    """This function learns an embedding for each graph in a given
+    dataset specified in the inputs file.
+    It uses the node2vec model to learn an embedding of a graph
+    in an unsupervised way.
+
+    Parameters
+    ----------
+    path_data : str
+        path to the directory containing all data
+    input_data : dict
+        a dictionary containing hyperparameters for training
+    """
+
     import os
     from graph import Graphs
 
@@ -34,7 +50,7 @@ def node2vec(path_data: str, input_data: dict):
     LR  = input_data['lrN2V']
     NE  = input_data['n_epochsN2V']
     NG  = input_data['num_graphs']
-    D   = input_data['dataset']
+    D   = input_data['datasetN2V']
     SF  = input_data['save_features']
 
     g = Graphs(path_data, D)
@@ -47,14 +63,6 @@ def node2vec(path_data: str, input_data: dict):
     for idx in range(num_graphs):
 
         edge_index = g.get_edges(idx)
-        print(edge_index.shape)
-
-        with open('../data/valid_graph.json') as f:
-            graph = json.load(f)
-            links = graph['links']
-            n_links = len(links)
-
-        print(f"{edge_index.shape[1]}/{n_links}")
 
         device = 'cuda' if torch.cuda.is_available() else 'cpu'
 

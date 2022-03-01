@@ -58,4 +58,3 @@ for idx2, node2 in enumerate(features):
     if similarity > 0.5:
         print(idx2, similarity, 
                 get_relation(idx1 + shift, idx2 + shift))
-

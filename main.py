@@ -10,14 +10,15 @@ import torch
 
 if __name__ == '__main__':
 
+    # create argument parser
     args = Create_Parser()
+
+    # load inputs file for training
+    input_data = Read_Input('inputs.yaml')
 
     if args.action == 'classify':
         
         import math
-
-        # load inputs file for training
-        input_data = Read_Input('inputs.yaml')
         
         # Grab some inputs
         use_seed: bool   = input_data["use_seed"]
@@ -76,14 +77,8 @@ if __name__ == '__main__':
                 Train(train_x, train_y, test_x, test_y, input_data)
 
     if args.action == 'embed':
-        # import Test module
-        from lib.Test import Test
-        
-        # specify arguments of Test function
-        path_data = 'data'
-        path_model = 'models'
-        path_inputs = 'Test_inputs.yaml'
 
-        input_data = Read_Input(path_inputs)
+        from node2vec import node2vec
         
-        Test(path_data, path_model, input_data)
+        node2vec('data', input_data)
+

@@ -2,10 +2,10 @@
 
 # NODE2VEC INPUTS ------------------------------------------------------
 
-dataset : 'test' # which dataset to learn? 'train', 'test' or 'valid'
+datasetN2V: 'test' # which dataset to learn? 'train', 'test' or 'valid'
 
 # training hyperparameters
-n_epochsN2V : 50 # number of epochs for node2vec
+n_epochsN2V : 100 # number of epochs for node2vec
 num_graphs : null # how many graphs to learn? set to null if all
 batch_size : 128 # how many nodes to consider per batch
 lrN2V : 0.01 # learning rate for node2vec
