@@ -229,3 +229,12 @@ as it did not perform so well. I have made an option to save
 a trained model but I haven't made the option to test it on
 data as it doesn't perform well. 
 
+Finally, to test that the embedding is working, you can go to
+`$ cd lib` and run `$ python test.py` this will select
+the feature vectors which have a high similarity with with 
+a particular feature and look up if those feature vectors are 
+a 1st, 2nd or more than a 2nd neighbour of the selected feature.
+Running this test will show that most features that have a 
+high similarity with our selected feature are either 1st or 2nd
+neighbours in the graph representation G(V,E), this tells us
+that the embedding works well to some degree.
