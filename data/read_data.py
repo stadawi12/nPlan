@@ -6,7 +6,7 @@ if __name__ == '__main__':
 
     # train_feats = np.load('train_feats.npy')
     train_labels = np.load('train_labels.npy')
-    # train_graph_id = np.load('train_graph_id.npy')
+    train_graph_id = np.load('train_graph_id.npy')
     # sorted_ids = list(train_graph_id)
     # sorted_ids.sort()
     # sorted_ids = np.array(sorted_ids)
@@ -15,9 +15,9 @@ if __name__ == '__main__':
     # print(train_feats[1])
     # print(train_labels.shape)
     # print(set(train_graph_id))
-    print(train_labels[0])
-    print(train_labels[372])
-    print(train_labels[0] == train_labels[104])
+    # print(train_labels[0])
+    # print(train_labels[372])
+    # print(train_labels[0] == train_labels[104])
 
     # for i, label in enumerate(train_labels):
         # if np.array_equal(label, train_labels[0]):
@@ -32,7 +32,7 @@ if __name__ == '__main__':
 
     # valid_feats = np.load('valid_feats.npy')
     # valid_labels = np.load('valid_labels.npy')
-    # valid_graph_id = np.load('valid_graph_id.npy')
+    valid_graph_id = np.load('valid_graph_id.npy')
     # print(valid_feats.shape)
     # print(valid_labels.shape)
     # print(valid_graph_id.shape)
@@ -40,10 +40,10 @@ if __name__ == '__main__':
     # print(train_graph_id)
     # print(set(valid_graph_id))
 
-    # s = {x: 0 for x in set(train_graph_id)}
-    # for el in train_graph_id:
-        # s[el] += 1
-    # print(s)
+    s = {x: 0 for x in set(valid_graph_id)}
+    for el in valid_graph_id:
+      s[el] += 1
+    print(s)
 
 
     def plot_bars(dataset: str):
