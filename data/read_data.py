@@ -5,8 +5,8 @@ import json
 if __name__ == '__main__':
 
     # train_feats = np.load('train_feats.npy')
-    train_labels = np.load('train_labels.npy')
-    train_graph_id = np.load('train_graph_id.npy')
+    # train_labels = np.load('train_labels.npy')
+    # train_graph_id = np.load('train_graph_id.npy')
     # sorted_ids = list(train_graph_id)
     # sorted_ids.sort()
     # sorted_ids = np.array(sorted_ids)
@@ -61,13 +61,20 @@ if __name__ == '__main__':
     # plot_bars('test')
     # plot_bars('valid')
 
-    # with open("train_graph.json") as jsonFile:
-    #     jsonObject = json.load(jsonFile)
-    #     links = jsonObject['links']
-    #     for link in links:
-    #         source = link['source']
-    #         if source == 0:
-    #             print(link)
+    def f():
+        with open("valid_graph.json") as jsonFile:
+            jsonObject = json.load(jsonFile)
+            links = jsonObject['links']
+            for link in links:
+                source = link['source']
+                if source < 3229:
+                    target = link['target']
+                    if target > 3229:
+                        print("got you")
+
+            print('No links between different graphs found')
+
+    f()
         # print(jsonObject.keys())
         # print("Is the graph directed: ", jsonObject['directed'])
         # print("Is it a multigraph: ", jsonObject['multigraph'])
@@ -90,7 +97,5 @@ if __name__ == '__main__':
         #     A[row,col] = 1
         # block = 1000
         # print(np.sum(A[0:block,0:block].T - A[0:block,0:block]))
-
-        jsonFile.close()
 
 
