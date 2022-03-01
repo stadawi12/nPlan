@@ -6,7 +6,7 @@ from graph import Graphs
 class TestModels(unittest.TestCase):
 
     
-    def test_no_missing_links_train(self):
+    def test_no_missing_links_test(self):
         import json
 
         g = Graphs('../data', 'test')
@@ -106,11 +106,45 @@ class TestModels(unittest.TestCase):
 
         self.assertEqual(l, 2)
 
-    def test_shift_train(self):
-        pass
+    def test_shift_train2(self):
 
+        g = Graphs('../data', 'train')
 
+        shift = g.get_shift(2)
 
+        self.assertEqual(shift, 3144)
+
+    def test_shift_train0(self):
+
+        g = Graphs('../data', 'train')
+
+        shift = g.get_shift(0)
+
+        self.assertEqual(shift, 0)
+
+    def test_num_nodes_train(self):
+
+        g = Graphs('../data', 'train')
+
+        num_nodes = g.num_nodes(0)
+        
+        self.assertEqual(num_nodes, 1767)
+
+        num_nodes = g.num_nodes(6)
+        
+        self.assertEqual(num_nodes, 1823)
+
+    def test_num_nodes_valid(self):
+
+        g = Graphs('../data', 'valid')
+
+        num_nodes = g.num_nodes(0)
+        
+        self.assertEqual(num_nodes, 3230)
+
+        num_nodes = g.num_nodes(1)
+        
+        self.assertEqual(num_nodes, 3284)
 
 if __name__ == '__main__':
     unittest.main()
