@@ -6,6 +6,7 @@ task is to train on the provided data.
 ## How to get started
 
 To get the code running follow these steps: 
+
 1) download my repository from github into an empty directory.
 Using `$ git clone`.
 
@@ -23,10 +24,18 @@ enough storage on your machine.
 
 4) you will get some errors during the installation, this is because
 I am using `torch_geometric` which cannot be downloaded using pip.
+To download the necessary `torch_geometric` packages, you will
+need to visit the
+[pytorch geometric installation page](https://pytorch-geometric.readthedocs.io/en/latest/notes/installation.html)
+There you should follow steps 1, 2, 3, and in step 4 only install
+`torch_cluster` as `torch-spline-conv` is not needed for my application.
+Once you have installed all the necessary packages, run
+`pip install -r requirements.txt` and make sure there are no errors 
+now.
 
 4) Once all the requirements are installed, go to the `tests` directory
-using `$ cd tests` and run the `Makefile` by using 
-`$ make`, this will run all the
+using `$ cd tests` and run the `Makefile` writing
+`$ make` into the console, this will run all the
 unittests I have created making sure that the code works as intended.
 If the tests have passed, the code most likely works as intended and 
 should be functional on your machine from now onwards.
