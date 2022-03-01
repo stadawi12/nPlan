@@ -18,7 +18,7 @@ num_negative_samples: 2 # num of negative samples per positive sample
 p: 1
 q: 1
 
-save_features: True # do you want to save the features
+save_features: True # do you want to save the embedded features
 
 
 # CLASSIFIER INPUTS ----------------------------------------------------
