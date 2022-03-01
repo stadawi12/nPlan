@@ -27,7 +27,7 @@ save_features : True # do you want to save the features
 dataset : 'train'
 # specify graph id to train on 
 # graphs in dataset are indexed from 0 to n where n is number of graphs
-# in dataset
+# in dataset.
 # set graph_id to null if want to train on all graphs one-by-one
 graph_id : null 
 # choose how to divide training data into train and test sets
@@ -55,7 +55,7 @@ seed     : 0 # int: choose seed value
 
 # Model choice, options:
 # ['Linear', 'smallLinear', 'linRes', 'linResBN']
-model : 'linRes' # str: model to use for training
+model : 'smallLinear' # str: model to use for training
 
 # Loss function, options:
 # ['BCELoss']

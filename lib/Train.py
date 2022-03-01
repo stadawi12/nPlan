@@ -130,10 +130,10 @@ def Train(train_x, train_y, test_x, test_y, input_data):
         # END OF EPOCH -------------------------------------------------
         scheduler.step(loss_training)
 
-    # At the end of training epoch print a statement to the console
-    print(f"E: {e}, loss: {loss_training:.5f}, Accuracy: " +
-            f"{acc:.5f}, " +
-            f"lr={get_lr(optimiser)}")
+        # At the end of training epoch print a statement to the console
+        print(f"E: {e}, loss: {loss_training:.5f}, Accuracy: " +
+                f"{acc:.5f}, " +
+                f"lr={get_lr(optimiser)}")
 
     # finish tensorboard writing
     metric_dict = {"loss": loss_training, 

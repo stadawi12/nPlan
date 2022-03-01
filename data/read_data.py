@@ -4,34 +4,36 @@ import json
 
 if __name__ == '__main__':
 
-    train_feats = np.load('train_feats.npy')
-    # train_labels = np.load('train_labels.npy')
+    # train_feats = np.load('train_feats.npy')
+    train_labels = np.load('train_labels.npy')
     # train_graph_id = np.load('train_graph_id.npy')
     # sorted_ids = list(train_graph_id)
     # sorted_ids.sort()
     # sorted_ids = np.array(sorted_ids)
     # print(np.array_equal(train_graph_id, sorted_ids))
-    print(train_feats.shape)
+    # print(train_feats.shape)
     # print(train_feats[1])
     # print(train_labels.shape)
     # print(set(train_graph_id))
-    # print(train_labels[240])
+    print(train_labels[0])
+    print(train_labels[372])
+    print(train_labels[0] == train_labels[104])
 
     # for i, label in enumerate(train_labels):
         # if np.array_equal(label, train_labels[0]):
             # print(i)
 
-    test_feats = np.load('test_feats.npy')
+    # test_feats = np.load('test_feats.npy')
     # test_labels = np.load('test_labels.npy')
     # test_graph_id = np.load('test_graph_id.npy')
-    print(test_feats.shape)
+    # print(test_feats.shape)
     # print(test_labels.shape)
     # print(set(test_graph_id))
 
-    valid_feats = np.load('valid_feats.npy')
+    # valid_feats = np.load('valid_feats.npy')
     # valid_labels = np.load('valid_labels.npy')
     # valid_graph_id = np.load('valid_graph_id.npy')
-    print(valid_feats.shape)
+    # print(valid_feats.shape)
     # print(valid_labels.shape)
     # print(valid_graph_id.shape)
     # s = {x: 0 for x in set(train_graph_id)}
@@ -59,13 +61,13 @@ if __name__ == '__main__':
     # plot_bars('test')
     # plot_bars('valid')
 
-    with open("train_graph.json") as jsonFile:
-        jsonObject = json.load(jsonFile)
-        links = jsonObject['links']
-        for link in links:
-            source = link['source']
-            if source == 0:
-                print(link)
+    # with open("train_graph.json") as jsonFile:
+    #     jsonObject = json.load(jsonFile)
+    #     links = jsonObject['links']
+    #     for link in links:
+    #         source = link['source']
+    #         if source == 0:
+    #             print(link)
         # print(jsonObject.keys())
         # print("Is the graph directed: ", jsonObject['directed'])
         # print("Is it a multigraph: ", jsonObject['multigraph'])
