@@ -55,6 +55,6 @@ with open('../data/train_graph.json') as f:
 node1 = features[idx1]
 for idx2, node2 in enumerate(features):
     similarity = cosine(node1, node2)
-    if similarity > 0.5:
+    if similarity > 0.4:
         print(idx2, similarity, 
                 get_relation(idx1 + shift, idx2 + shift))

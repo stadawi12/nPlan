@@ -71,7 +71,7 @@ Therefore, I stuck to the simple linear models. Had I seen promise
 in the linear models I would have moved on to something more 
 modern.
 
-To summarise, I have there are two steps in my project, one is
+To summarise, there are two steps in my project, one is
 an embedding task where I learn to represent a single graph in
 a d-dimensional feature space and second is a classification task
 where I use the learnt features of the graph to predict labels
@@ -90,27 +90,22 @@ Using `$ git clone`.
 `$ python3.9 -m venv .venv` then go ahead and source the new environment
 using `$ source .venv/bin/activate`
 
-3) Once that is done, you will be ready to install the necessary python 
-packages to run my scripts, to do this, run
-`$ pip install -r requirements.txt`,
-this may take a while as I am using torch
-for my project which alone is ~1GB large, so make sure you have 
-enough storage on your machine.
+3) First install torch using `$ pip install torch`
 
-4) you will get some errors during the installation, this is because
-I am using `torch_geometric` which cannot be downloaded using `pip
+4) After torch is installed correctly, you will need to download
+`torch_geometric` which cannot be downloaded using `pip
 install` in a straightforward manner.
 To download the necessary `torch_geometric` packages, you will
 need to visit the
 [pytorch geometric installation page](https://pytorch-geometric.readthedocs.io/en/latest/notes/installation.html)
 There you should follow steps 1, 2, 3, and in step 4 only install
 `torch_cluster` as `torch-spline-conv` is not needed for my application.
-Once you have installed all the necessary packages, run
-`$ pip install -r requirements.txt` again and make sure there are no 
-errors this time.
+Once you have installed all the necessary torch packages, run
+`$ pip install -r requirements.txt`. You should now have all
+the requirements installed.
 
-4) Once all the requirements are installed, go to the `tests` directory
-using `$ cd tests` and run the `Makefile` writing
+5) Once all the requirements are installed, go to the `tests` directory
+using `$ cd tests` and run the `Makefile` by writing
 `$ make` into the console, this will run all the
 unittests I have created making sure that the code works as intended.
 If the tests have passed, the code most likely works as intended and 
@@ -208,3 +203,29 @@ been provided. Nevertheless, I have learnt a lot about
 graph neural networks, embedding spaces, I have also
 researched word embedding methods and sentence embedding methods
 using machine learning, models like wrod2vec and doc2vec.
+
+## Final comments
+
+For the embedding, as it is not a model such as word2vec, having
+a pretrained model doesn't make a lot of sense to me. My main goal
+is to use node2vec to obtain feature vector representation of
+a graph rather than
+generating a model that is able to embed nodes. If I had 
+built a doc2vec or 
+similar it would make sense to have a pretrained model that would
+take a sentence and be able to embed it into a feature space, 
+however, this is not the case in this project. What I do have
+however are the pre trained features that have been obtained
+using node2vec for every graph, each graph has been learnt using
+70 epochs of the node2vec model, the feature 
+representations of the graphs can be found in 
+`data/features`.
+
+These feature vectors are used for the classification task which can
+be ran using `$ python main.py -a classify`.
+
+I haven't provided a pre trained model for the classification
+as it did not perform so well. I have made an option to save
+a trained model but I haven't made the option to test it on
+data as it doesn't perform well. 
+
