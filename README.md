@@ -83,7 +83,8 @@ associated with those features.
 To get the code running follow these steps: 
 
 1) download my repository from github into an empty directory.
-Using `$ git clone`.
+Using `$ git clone` or downloading it as a zip or using your
+prefered method.
 
 2) Create a fresh python environment (I have used Python version
 3.9.5 for my project, would recommend using same python version) using 
