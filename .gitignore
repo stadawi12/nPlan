@@ -1,14 +1,6 @@
 # do not track the python environment directory
 .venv
 
-# Do not track the data files as they are large
-data/*
-# But do track the data directory itself, only not its contents
-!data/.gitkeep
-!data/read_data.py
-!data/adjacency.py
-!data/edge_index.py
-
 # ignore the tensorboard directory
 runs
 
@@ -19,6 +11,3 @@ runs
 models/*
 !models/.gitkeep
 !models/README.md
-
-# ignore predictions folder
-predictions
