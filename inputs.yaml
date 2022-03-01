@@ -5,7 +5,7 @@
 datasetN2V: 'test' # which dataset to learn? 'train', 'test' or 'valid'
 
 # training hyperparameters
-n_epochsN2V: 100 # number of epochs for node2vec
+n_epochsN2V: 2 # number of epochs for node2vec
 graph_idN2V: 0 # choose graph id to learn? set to null if all
 batch_size: 128 # how many nodes to consider per batch
 lrN2V: 0.01 # learning rate for node2vec
@@ -18,7 +18,7 @@ num_negative_samples: 2 # num of negative samples per positive sample
 p: 1
 q: 1
 
-save_features: True # do you want to save the embedded features
+save_features: False # do you want to save the embedded features
 
 
 # CLASSIFIER INPUTS ----------------------------------------------------
@@ -29,14 +29,14 @@ dataset : 'train'
 # graphs in dataset are indexed from 0 to n where n is number of graphs
 # in dataset.
 # set graph_id to null if want to train on all graphs one-by-one
-graph_id : null 
+graph_id : 0 
 # choose how to divide training data into train and test sets
 test_split : 0.1 # if 0.1, 10% will be used as test data
 
 # Training hyperparameters
-n_epochs   : 100 # int: number of epochs
+n_epochs   : 50 # int: number of epochs
 lr         : 0.01 # float: initial learning rate
-device     : 'cuda' # str: which device to use 'cpu' or 'cuda:0'
+device     : 'cpu' # str: which device to use 'cpu' or 'cuda:0'
 
 # Scheduler options 
 # The scheduler controls the learning rate during training, if it
